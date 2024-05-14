@@ -80,7 +80,6 @@ fun BlogItem(blog: Blog, modifier: Modifier = Modifier) {
                 fontSize = 16.sp,
                 lineHeight = 18.sp,
                 color = MaterialTheme.colorScheme.onSurface,
-//                textAlign = TextAlign.Justify
 //                maxLines = 1,
             )
             MSpacer(10)
