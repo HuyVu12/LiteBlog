@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class MainScreenViewModel: ViewModel() {
-    private val _state = MutableStateFlow(HomeScreenState())
+    private val _state = MutableStateFlow(MainScreenState())
     val state = _state.asStateFlow()
 
     fun checkinLogin() {

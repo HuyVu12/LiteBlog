@@ -9,9 +9,4 @@ class HomeScreenViewModel() :ViewModel() {
     private val _state = MutableStateFlow(HomeScreenState())
     val state = _state.asStateFlow()
 
-    fun checkinLogin() {
-        _state.update {
-            it.copy(isLogin = true)
-        }
-    }
 }
