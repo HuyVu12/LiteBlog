@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "469974689329",
+    "project_id": "liteblog-7d2d5",
+    "storage_bucket": "liteblog-7d2d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469974689329:android:75738758bc563f265ed710",
+        "android_client_info": {
+          "package_name": "com.example.liteblog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgQ4rHSi1cIHoS6A3ubOK5sBVnJ__Q_PQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
