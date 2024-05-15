@@ -1,6 +1,7 @@
 package com.example.liteblog.utils.Model
 
 data class Blog(
+    val id: String? = null,
     val userinfor: UserInfor? = null,
     val title: String ?= null,
     val description: String ?= null,
