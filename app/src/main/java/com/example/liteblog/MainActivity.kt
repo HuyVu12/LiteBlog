@@ -47,7 +47,8 @@ val ROUTE_LOGIN = "login"
 val ROUTE_REGISTER = "register"
 val ROUTE_HOME = "home"
 val ROUTE_BLOG = "blog"
-val ROUTE_MAINSETTING = "main_setting"
+val ROUTE_CREATE_BLOG = "create_blog"
+val ROUTE_SETTINGS = "settings"
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -69,7 +70,7 @@ fun MainApp() {
                 navController = navController
             )
         }
-        composable(ROUTE_MAINSETTING) {
+        composable(ROUTE_SETTINGS) {
             MainSettingScreen(
                 navController = navController)
         }

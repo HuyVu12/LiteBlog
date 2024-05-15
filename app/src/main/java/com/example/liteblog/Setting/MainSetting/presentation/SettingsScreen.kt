@@ -44,7 +44,7 @@ fun MainSettingScreen(
             )
         }
     ) {
-        MainMainSettingScreen(
+        MainSettingsScreen(
             modifier = Modifier.padding(it),
             navController = navController
         )
@@ -52,10 +52,10 @@ fun MainSettingScreen(
 }
 
 @Composable
-fun MainMainSettingScreen(
+fun MainSettingsScreen(
     modifier: Modifier = Modifier,
     navController: NavController = rememberNavController(),
-    viewModel: MainSettingViewModel = viewModel()
+    viewModel: SettingsViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val datastorage = UserStorage(context)
@@ -103,5 +103,5 @@ fun MainMainSettingScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMainMainSettingScreen() {
-    MainMainSettingScreen()
+    MainSettingsScreen()
 }
