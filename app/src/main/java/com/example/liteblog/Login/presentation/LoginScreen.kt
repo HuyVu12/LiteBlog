@@ -54,6 +54,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Login.presentation.Component.LSBotButton
 import com.example.liteblog.Login.presentation.Component.LSInputComp
+import com.example.liteblog.ROUTE_BLOG
+import com.example.liteblog.ROUTE_REGISTER
 import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,10 +82,10 @@ fun LoginScreen(
         MainLoginScreen(
             modifier = Modifier.padding(it),
             onChangeToRegister = {
-                navController.navigate("register")
+                navController.navigate(ROUTE_REGISTER)
             },
             onChangeToHome = {
-                navController.navigate("home")
+                navController.navigate(ROUTE_BLOG)
             }
         )
     }

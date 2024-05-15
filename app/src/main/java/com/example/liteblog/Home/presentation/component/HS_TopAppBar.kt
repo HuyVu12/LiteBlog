@@ -1,6 +1,7 @@
 package com.example.liteblog.Home.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,8 @@ import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.sharp.AddCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,19 +34,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.ROUTE_BLOG
+import com.example.liteblog.ROUTE_MAINSETTING
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun HS_TopAppBar(
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+    navController: NavController = rememberNavController()
 ) {
     TopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
             Text(
                 text = "Lite Blog",
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.clickable {
+                    navController.navigate(ROUTE_BLOG)
+                }
             )
         },
         actions = {
@@ -51,10 +62,12 @@ fun HS_TopAppBar(
                 Icon(imageVector = Icons.Outlined.Notifications, contentDescription = null)
             }
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Outlined.AddCircle, contentDescription = null)
+                Icon(imageVector = Icons.Sharp.AddCircle, contentDescription = null)
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Outlined.Favorite, contentDescription = null)
+            IconButton(onClick = {
+                navController.navigate(ROUTE_MAINSETTING)
+            }) {
+                Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
