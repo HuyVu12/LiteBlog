@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.liteblog.utils.Data.FBcreateUser
-import com.example.liteblog.utils.Data.FBgetUserInforByUsername
+import com.example.liteblog.utils.Data.Database.FBcreateUser
+import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
 import com.example.liteblog.utils.Model.Birthday
 import com.example.liteblog.utils.Model.User
 import kotlinx.coroutines.delay

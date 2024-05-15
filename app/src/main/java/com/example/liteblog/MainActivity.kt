@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.Home.presentation.CreateBlog.presentation.CreateBlogScreen
 import com.example.liteblog.Home.presentation.Main.CheckScreen
 import com.example.liteblog.Login.presentation.LoginScreen
 import com.example.liteblog.Register.presentation.RegisterScreen
@@ -56,23 +57,19 @@ fun MainApp() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = ROUTE_BLOG) {
         composable(ROUTE_LOGIN) {
-            LoginScreen(
-                navController = navController
-            )
+            LoginScreen(navController = navController)
         }
         composable(ROUTE_REGISTER) {
-            RegisterScreen(
-                navController = navController
-            )
+            RegisterScreen(navController = navController)
         }
         composable(ROUTE_BLOG) {
-            CheckScreen(
-                navController = navController
-            )
+            CheckScreen(navController = navController)
         }
         composable(ROUTE_SETTINGS) {
-            MainSettingScreen(
-                navController = navController)
+            MainSettingScreen(navController = navController)
+        }
+        composable(ROUTE_CREATE_BLOG) {
+            CreateBlogScreen(navController = navController)
         }
     }
 }

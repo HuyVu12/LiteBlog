@@ -1,14 +1,12 @@
 package com.example.liteblog.utils.Model
 
 data class Blog(
-    val id: String? = null,
-    val userinfor: UserInfor? = null,
+    var id: String? = null,
+    var userinfor: UserInfor? = null,
     val title: String ?= null,
     val description: String ?= null,
-    val timePost: Long ?= null,
+    var timePost: Long ?= null,
     val comments: List<Comment> = emptyList(),
-    val numLikes: Int = 0,
-    val numReport: Int = 0,
     val likes: List<UserInfor> = emptyList(),
     val reports: List<UserInfor> = emptyList(),
 )

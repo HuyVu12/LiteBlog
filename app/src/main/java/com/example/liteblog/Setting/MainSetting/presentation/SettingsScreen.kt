@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.presentation.component.HS_TopAppBar
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.ROUTE_LOGIN
+import com.example.liteblog.utils.Component.MyBasicTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,9 +40,7 @@ fun MainSettingScreen(
 ) {
     Scaffold(
         topBar = {
-            HS_TopAppBar(
-                navController = navController
-            )
+            MyBasicTopBar(navController = navController, title = { Text(text = "Menu")})
         }
     ) {
         MainSettingsScreen(

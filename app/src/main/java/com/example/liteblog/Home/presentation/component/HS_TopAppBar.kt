@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.ROUTE_BLOG
+import com.example.liteblog.ROUTE_CREATE_BLOG
 import com.example.liteblog.ROUTE_SETTINGS
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +46,7 @@ fun HS_TopAppBar(
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(imageVector = Icons.Outlined.Notifications, contentDescription = null)
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate(ROUTE_CREATE_BLOG)}) {
                 Icon(imageVector = Icons.Sharp.Create, contentDescription = null)
             }
             IconButton(onClick = {

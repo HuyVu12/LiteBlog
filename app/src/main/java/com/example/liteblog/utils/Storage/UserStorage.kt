@@ -1,10 +1,10 @@
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,6 +26,7 @@ class UserStorage(private val context: Context) {
     }
 }
 
-object userData {
+object UserData {
     var username = ""
+    var userinfor = UserInfor()
 }

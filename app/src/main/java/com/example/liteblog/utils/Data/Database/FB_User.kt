@@ -1,29 +1,31 @@
-package com.example.liteblog.utils.Data
+package com.example.liteblog.utils.Data.Database
 
 import android.util.Log
-import com.example.liteblog.utils.Data.Database.UserInforColl
-import com.example.liteblog.utils.Data.Database.UsersColl
+import com.example.liteblog.utils.Data.Database.Collection.UserCollection
+import com.example.liteblog.utils.Data.Database.Collection.UserInforCollection
 import com.example.liteblog.utils.Model.User
 import com.example.liteblog.utils.Model.UserInfor
-import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-object Database {
+object Collection {
     val db = Firebase.firestore
-    val UserInforColl by lazy {
+    val UserInforCollection by lazy {
         db.collection("user_infors")
     }
-    val UsersColl by lazy {
+    val UserCollection by lazy {
         db.collection("users")
+    }
+    val BlogCollection by lazy {
+        db.collection("blogs")
     }
 }
 
 suspend fun FBgetUserInforByUsername(username: String): UserInfor? {
     try {
-        val doc = UserInforColl.document(username).get().await()
+        val doc = UserInforCollection.document(username).get().await()
         if(doc.exists()) {
             Log.i("huyvu", "${doc.toObject<UserInfor>()}")
             return doc.toObject<UserInfor>()
@@ -42,8 +44,8 @@ suspend fun FBcreateUser(user: User) {
         username = user.username?:""
     )
     try {
-        val docUser = UsersColl.document(userInfor.username).set(user).await()
-        val docUserInfor = UserInforColl.document(userInfor.username).set(userInfor).await()
+        val docUser = UserCollection.document(userInfor.username).set(user).await()
+        val docUserInfor = UserInforCollection.document(userInfor.username).set(userInfor).await()
     } catch (e: Exception) {
 
     }
@@ -51,7 +53,7 @@ suspend fun FBcreateUser(user: User) {
 
 suspend fun FBgetUserByUsernameAndPassword(username: String, password: String): User? {
     try {
-        val query = UsersColl
+        val query = UserCollection
             .whereEqualTo("username", username)
             .whereEqualTo("password", password)
         val docs = query.get().await()

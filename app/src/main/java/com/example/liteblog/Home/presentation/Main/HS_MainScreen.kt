@@ -24,8 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.presentation.Blog.BlogScreen
 import com.example.liteblog.Home.presentation.component.HS_TopAppBar
 import com.example.liteblog.ROUTE_BLOG
-import com.example.liteblog.ROUTE_HOME
-import userData
+import UserData
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -44,7 +43,7 @@ fun CheckScreen(
             navController.navigate("login")
         }
         else if(username!!.length > 0) {
-            userData.username = username!!
+            UserData.username = username!!
             viewModel.checkinLogin()
         }
     })

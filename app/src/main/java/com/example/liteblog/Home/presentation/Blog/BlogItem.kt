@@ -118,49 +118,6 @@ fun BlogItem(
             }
         )
     }
-
-//    Row (
-//        modifier = modifier
-//            .fillMaxWidth()
-//            .background(MaterialTheme.colorScheme.surface)
-//    ){
-//        UserIconDefault(userinfor = userInfor, size = 40, onClick = { /*TODO*/ })
-//        Column(
-//            modifier = Modifier
-//                .weight(1f)
-//                .padding(vertical = 5.dp, horizontal = 10.dp),
-////            verticalArrangement = Arrangement.spacedBy(2.dp)
-//        ) {
-//            Text(
-//                text = userInfor.username,
-//                fontWeight = FontWeight.SemiBold,
-//                fontSize = 16.sp,
-//                color = MaterialTheme.colorScheme.onSurface
-//            )
-//            Text(
-//                text = blog.title!!,
-//                fontWeight = FontWeight.Medium,
-//                fontSize = 17.sp,
-//                color = MaterialTheme.colorScheme.onSurface
-//            )
-//            Text(
-//                text = blog.description!!,
-//                fontWeight = FontWeight.W400,
-//                fontSize = 16.sp,
-//                lineHeight = 18.sp,
-//                color = MaterialTheme.colorScheme.onSurface,
-//                maxLines = if(viewModel.showAllDescription) Int.MAX_VALUE else 4,
-//                modifier = Modifier.clickable {
-//                    viewModel.showAllDescription = !viewModel.showAllDescription
-//                }
-//            )
-//            MSpacer(10)
-//            BI_BottomIcon(
-//                likes = blog.likes.size,
-//                comments = blog.comments.size
-//            )
-//        }
-//    }
 }
 
 @Composable

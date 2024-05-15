@@ -6,9 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.liteblog.utils.Data.FBgetUserByUsernameAndPassword
-import com.example.liteblog.utils.Model.User
+import com.example.liteblog.utils.Data.Database.FBgetUserByUsernameAndPassword
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
