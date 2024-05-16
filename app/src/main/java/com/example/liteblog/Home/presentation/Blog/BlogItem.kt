@@ -17,9 +17,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.liteblog.Home.presentation.Comment.PreviewCommentItem
+import com.example.liteblog.Home.presentation.Comment.PreviewScreenComment
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Functions.MyFunction.Companion.parseTimePastToString
@@ -59,6 +64,7 @@ fun PreviewBlogItem() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlogItem(
     blog: Blog,
@@ -71,8 +77,20 @@ fun BlogItem(
     var liked by rememberSaveable {
         mutableStateOf(false)
     }
-    val uriList = rememberSaveable { mutableListOf<Uri>() }
+    var isShowComment by rememberSaveable {
+        mutableStateOf(false)
+    }
+    if(isShowComment) {
+        ModalBottomSheet(
+            onDismissRequest = {isShowComment = false},
+            sheetState = rememberModalBottomSheetState(
+                skipPartiallyExpanded = true
+            ),
 
+        ) {
+            PreviewScreenComment()
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -155,6 +173,9 @@ fun BlogItem(
             onClickLike = {
                 liked = !liked
             },
+            onShowComment = {
+                isShowComment = true
+            }
         )
     }
 }
@@ -166,7 +187,8 @@ fun BI_BottomIcon(
     comments: Int,
     liked: Boolean,
 
-    onClickLike: () -> Unit
+    onClickLike: () -> Unit,
+    onShowComment: () -> Unit
 ) {
     val numLike = likes + if(liked == true) 1 else 0
     Row (
@@ -183,7 +205,7 @@ fun BI_BottomIcon(
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .size(16.dp)
+                    .size(18.dp)
                     .clickable { onClickLike() },
             )
             Text(
@@ -192,7 +214,7 @@ fun BI_BottomIcon(
                     else if(liked == false) "${likes}"
                     else if(likes == 0) "1"
                     else "bạn và ${likes} người khác",
-                fontSize = 14.sp
+                fontSize = 15.sp
             )
         }
         Row (
@@ -201,7 +223,10 @@ fun BI_BottomIcon(
         ){
             Text(
                 text = "${comments.toString()}  bình luận",
-                fontSize = 14.sp
+                fontSize = 15.sp,
+                modifier = Modifier.clickable {
+                    onShowComment()
+                }
             )
         }
     }
@@ -214,6 +239,7 @@ fun PreViewBI_BottomIcon() {
         likes = 0,
         comments = 0,
         liked = false,
-        onClickLike = {}
+        onClickLike = {},
+        onShowComment = {}
     )
 }

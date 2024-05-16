@@ -198,11 +198,14 @@ fun CreateBlogMainScreen(
                 Divider()
                 MSpacer(10)
                 Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)){
-                    OutlinedButton(onClick = {
-                        pickPhotoLaucher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        )
-                    }) {
+                    OutlinedButton(
+                        onClick = {
+                            pickPhotoLaucher.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
+                        },
+                        enabled = !state.isLoading
+                    ) {
                         Icon(imageVector = Icons.Default.Add, contentDescription = null)
                         Text(text = "Chọn ảnh")
                     }
@@ -211,6 +214,7 @@ fun CreateBlogMainScreen(
                         onClick = {
                             viewModel.listImages = mutableListOf()
                         },
+                        enabled = !state.isLoading,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer

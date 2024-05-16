@@ -18,6 +18,6 @@ data class Comment(
     val userinfor: UserInfor? = null,
     val description: String ?= null,
     val timePost: Long ?= null,
-    val numLikes: Int = 0,
-    val numReport: Int = 0,
+    val likes: List<UserInfor> = emptyList(),
+    val reports: List<UserInfor> = emptyList(),
 )

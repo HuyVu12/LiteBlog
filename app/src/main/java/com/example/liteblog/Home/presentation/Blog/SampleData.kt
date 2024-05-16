@@ -2,12 +2,14 @@ package com.example.liteblog.Home.presentation.Blog
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
+import com.example.liteblog.utils.Model.Comment
 import com.example.liteblog.utils.Model.UserInfor
 import java.time.Instant
 
 @RequiresApi(Build.VERSION_CODES.O)
-val blogs = listOf<Blog>(
+val Sample_Blogs = listOf<Blog>(
         Blog(
             userinfor = UserInfor(firstname = "Vu", lastname = "Nguyen", username = "huyvu.3107"),
             title = "What is Lorem Ipsum?",
@@ -56,3 +58,65 @@ val blogs = listOf<Blog>(
             timePost = Instant.now().toEpochMilli()
         )
     )
+val Sample_Comments = listOf<Comment>(
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "Hello World!",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    ),
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    ),
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "remaining essentially unchanged. It was popularised in the 1960s with",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    ),
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    ),
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    ),
+    Comment(
+        userinfor = UserInfor(
+            username = "huyvu_3107",
+            firstname = "Vũ"
+        ),
+        description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        timePost = MyFunction.getCurrentTime(),
+        likes = emptyList(),
+        reports = emptyList()
+    )
+)

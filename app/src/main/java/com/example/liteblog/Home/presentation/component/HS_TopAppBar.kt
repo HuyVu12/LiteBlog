@@ -35,12 +35,15 @@ fun HS_TopAppBar(
     TopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
-            TextButton(onClick = { navController.navigate(ROUTE_BLOG) }) {
+//            TextButton(
+//                onClick = { navController.navigate(ROUTE_BLOG) },
+//                modifier = Modifier
+//            ) {
                 Text(
                     text = "Lite Blog",
                     style = MaterialTheme.typography.headlineLarge,
                 )
-            }
+//            }
         },
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
@@ -56,10 +59,11 @@ fun HS_TopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.surface,
+            scrolledContainerColor = MaterialTheme.colorScheme.surface,
             actionIconContentColor = MaterialTheme.colorScheme.onSurface,
             navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-            titleContentColor = MaterialTheme.colorScheme.primary
+            titleContentColor = MaterialTheme.colorScheme.primary,
         ),
     )
 }
