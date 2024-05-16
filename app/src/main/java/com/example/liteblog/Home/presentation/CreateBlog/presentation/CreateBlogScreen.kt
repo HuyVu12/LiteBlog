@@ -48,6 +48,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -133,16 +134,25 @@ fun CreateBlogMainScreen(
     val pickPhotoLaucher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = {
-            if(it.size > 0)
-            viewModel.listImages = it.toMutableList()
+            if(it.size > 0) {
+                viewModel.listImages = it.toMutableList()
+            }
         }
     )
+    val state by viewModel.state.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
     ) {
-        LazyColumn() {
+        if(state.isLoading){
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            MSpacer(10)
+        }
+        LazyColumn(
+            modifier = Modifier
+                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+        ) {
             item {
                 CreateBlogHead(userInfor)
                 OutlinedTextField(
@@ -152,8 +162,10 @@ fun CreateBlogMainScreen(
                     label = { Text(text = "Tiêu đề")},
                     maxLines = 3,
                     textStyle = TextStyle(
-                        fontWeight = FontWeight.Bold
-                    )
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    ),
+                    enabled = !state.isLoading
                 )
                 OutlinedTextField(
                     value = viewModel.description,
@@ -163,6 +175,7 @@ fun CreateBlogMainScreen(
                         .weight(1f),
                     label = { Text(text = "Nội dung")},
                     minLines = 10,
+                    enabled = !state.isLoading
                 )
                 LazyRow(
                     contentPadding = PaddingValues(10.dp),

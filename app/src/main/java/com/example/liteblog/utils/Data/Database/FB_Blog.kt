@@ -23,7 +23,7 @@ suspend fun FBcreateBlog(blog: Blog) {
 }
 
 suspend fun FBGetBlogs() :List<Blog> {
-    val docs = Collection.BlogCollection.orderBy("timePost", Query.Direction.DESCENDING).limitToLast(20).get().await()
+    val docs = Collection.BlogCollection.orderBy("timePost", Query.Direction.DESCENDING).limit(20).get().await()
     val listsBlog = mutableListOf<Blog>()
 
     for(doc in docs) {

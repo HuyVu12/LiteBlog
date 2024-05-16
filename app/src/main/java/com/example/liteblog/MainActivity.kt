@@ -56,7 +56,7 @@ val ROUTE_PICK_SINGLE_PHOTO = "pick_single_photo"
 @Composable
 fun MainApp() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = ROUTE_BLOG) {
+    NavHost(navController = navController, startDestination = ROUTE_LOGIN) {
         composable(ROUTE_LOGIN) {
             LoginScreen(navController = navController)
         }

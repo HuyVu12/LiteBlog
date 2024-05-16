@@ -1,9 +1,6 @@
 package com.example.liteblog.Home.presentation.CreateBlog.presentation
 
-import android.annotation.SuppressLint
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -37,7 +34,7 @@ class CreateBlogViewModel: ViewModel() {
             }
             var imageList = mutableListOf<String>()
             for (image in listImages) {
-                imageList.add(FireStorage.uploadImage(image!!))
+                imageList.add(FireStorage.getUrimage(FireStorage.uploadImage(image!!)).toString())
             }
             FBcreateBlog(
                 Blog(

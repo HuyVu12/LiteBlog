@@ -1,20 +1,19 @@
 package com.example.liteblog.Home.presentation.Blog
 
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -24,28 +23,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
-import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Functions.MyFunction.Companion.parseTimePastToString
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.UserInfor
 import com.example.liteblog.utils.Storage.FireStorage
-import kotlinx.coroutines.launch
 import java.time.Instant
 
 @Composable
@@ -77,14 +71,8 @@ fun BlogItem(
     var liked by rememberSaveable {
         mutableStateOf(false)
     }
-    val uriList = remember { mutableStateListOf<Uri>() }
-    LaunchedEffect(key1 = Unit) {
-        if (blog.imageList != null && blog.imageList!!.size > 0)
-        for(uriImage in blog.imageList!!) {
-            if(uriImage.length > 0)
-                uriList.add(FireStorage.getUrimage(uriImage)!!)
-        }
-    }
+    val uriList = rememberSaveable { mutableListOf<Uri>() }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -113,7 +101,7 @@ fun BlogItem(
         }
 //        BODY
         MSpacer(10)
-        if(blog.title!!.length > 0) {
+        if(blog.title!!.isNotEmpty()) {
             Text(
                 text = blog.title,
                 fontWeight = FontWeight.Medium,
@@ -121,9 +109,9 @@ fun BlogItem(
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-        if(blog.description!!.length > 0) {
+        if(blog.description!!.isNotEmpty()) {
             Text(
-                text = blog.description!!,
+                text = blog.description,
                 fontWeight = FontWeight.W400,
                 fontSize = 16.sp,
                 lineHeight = 18.sp,
@@ -134,31 +122,39 @@ fun BlogItem(
                 }
             )
         }
-        if(uriList.size > 0) {
+        if(blog.imageList != null && blog.imageList!!.size > 0) {
+            MSpacer(10)
             LazyRow(
                 modifier = Modifier
-                    .height(300.dp)
                     .fillMaxWidth()
+                ,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(uriList) {uri ->
+                items(blog.imageList!!) {uri ->
                     AsyncImage(
                         model = uri,
                         contentDescription = null,
                         modifier = Modifier
+                            .heightIn(0.dp, 300.dp)
+                            .clip(shape = RoundedCornerShape(12.dp))
+                            .border(
+                                width = 0.5.dp,
+                                color = MaterialTheme.colorScheme.secondary,
+                                shape = RoundedCornerShape(12.dp)
+                            )
                     )
                 }
             }
         }
-
         MSpacer(10)
-
         BI_BottomIcon(
             likes = blog.likes.size,
             comments = blog.comments.size,
             liked = liked,
             onClickLike = {
                 liked = !liked
-            }
+            },
         )
     }
 }
