@@ -43,7 +43,9 @@ fun CreateBlog_TopBar(
         actions = {
             Button(
                 onClick = { viewModel.addBlog() },
-                enabled = (viewModel.description.length > 0 || viewModel.title.length > 0)
+                enabled = (
+                        viewModel.description.length > 0 || viewModel.title.length > 0 || viewModel.listImages.size > 0
+                        )
             ) {
                 Text(text = "Tạo", fontSize = 16.sp)
             }

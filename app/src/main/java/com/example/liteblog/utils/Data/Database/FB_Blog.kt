@@ -9,7 +9,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 
-@RequiresApi(Build.VERSION_CODES.O)
 suspend fun FBcreateBlog(blog: Blog) {
     try {
         val id = Collection.BlogCollection.document().id

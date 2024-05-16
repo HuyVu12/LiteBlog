@@ -1,5 +1,7 @@
 package com.example.liteblog.utils.Functions
 
+import android.icu.util.Calendar
+import android.util.Log
 import com.example.liteblog.utils.Model.DateTime
 import java.time.Instant
 import java.time.LocalDateTime
@@ -12,17 +14,13 @@ class MyFunction {
             return instant.toEpochMilli()
         }
         fun getDateTimeFromMilli(millis: Long): DateTime {
-            val instant = Instant.ofEpochMilli(millis)
-            val datetime = LocalDateTime.from(instant)
-            val dateTime = DateTime(
-                year = datetime.year,
-                month = datetime.monthValue * 1L,
-                day = datetime.dayOfMonth * 1L,
-                hour = datetime.hour * 1L,
-                minute = datetime.minute * 1L,
-                second = datetime.second * 1L
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = millis
+            return DateTime(
+                year = 1L * calendar.get(Calendar.YEAR),
+                month = 1L * calendar.get(Calendar.MONTH),
+                day = 1L * calendar.get(Calendar.DAY_OF_MONTH),
             )
-            return dateTime
         }
         fun getTimePastFromNow(millis: Long): DateTime {
             val timePastMillis = getCurrentTime() - millis
@@ -36,7 +34,7 @@ class MyFunction {
             var res = ""
             val timePast = getTimePastFromNow(timePost)
             if(timePast.day > 30){
-                val timePostDate = getTimePastFromNow(timePost)
+                val timePostDate = getDateTimeFromMilli(timePost)
                 res = "${timePostDate.day} thg ${timePostDate.month}, ${timePostDate.year}"
             }
             else {

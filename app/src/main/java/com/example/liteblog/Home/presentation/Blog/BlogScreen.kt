@@ -21,14 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun PreviewBlogScreen() {
     BlogScreen()
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BlogScreen(
     modifier: Modifier = Modifier,

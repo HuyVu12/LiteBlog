@@ -19,6 +19,7 @@ import com.example.liteblog.Login.presentation.LoginScreen
 import com.example.liteblog.Register.presentation.RegisterScreen
 import com.example.liteblog.Setting.MainSetting.presentation.MainSettingScreen
 import com.example.liteblog.ui.theme.LiteBlogTheme
+import com.example.liteblog.utils.Functions.PickSinglePhoto
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -50,8 +51,8 @@ val ROUTE_HOME = "home"
 val ROUTE_BLOG = "blog"
 val ROUTE_CREATE_BLOG = "create_blog"
 val ROUTE_SETTINGS = "settings"
+val ROUTE_PICK_SINGLE_PHOTO = "pick_single_photo"
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainApp() {
     val navController = rememberNavController()
@@ -70,6 +71,9 @@ fun MainApp() {
         }
         composable(ROUTE_CREATE_BLOG) {
             CreateBlogScreen(navController = navController)
+        }
+        composable(ROUTE_PICK_SINGLE_PHOTO) {
+            PickSinglePhoto(navController)
         }
     }
 }

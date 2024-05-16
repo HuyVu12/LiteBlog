@@ -1,5 +1,6 @@
 package com.example.liteblog.Home.presentation.Blog
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -8,8 +9,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -17,9 +22,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -29,12 +37,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Functions.MyFunction.Companion.parseTimePastToString
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.UserInfor
+import com.example.liteblog.utils.Storage.FireStorage
+import kotlinx.coroutines.launch
 import java.time.Instant
 
 @Composable
@@ -66,9 +77,14 @@ fun BlogItem(
     var liked by rememberSaveable {
         mutableStateOf(false)
     }
-    var timePost = MyFunction.getTimePastFromNow(
-        blog.timePost!!
-    )
+    val uriList = remember { mutableStateListOf<Uri>() }
+    LaunchedEffect(key1 = Unit) {
+        if (blog.imageList != null && blog.imageList!!.size > 0)
+        for(uriImage in blog.imageList!!) {
+            if(uriImage.length > 0)
+                uriList.add(FireStorage.getUrimage(uriImage)!!)
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -105,18 +121,34 @@ fun BlogItem(
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-
-        Text(
-            text = blog.description!!,
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = if(showAllDescription) Int.MAX_VALUE else 4,
-            modifier = Modifier.clickable {
-                showAllDescription = !showAllDescription
+        if(blog.description!!.length > 0) {
+            Text(
+                text = blog.description!!,
+                fontWeight = FontWeight.W400,
+                fontSize = 16.sp,
+                lineHeight = 18.sp,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = if(showAllDescription) Int.MAX_VALUE else 4,
+                modifier = Modifier.clickable {
+                    showAllDescription = !showAllDescription
+                }
+            )
+        }
+        if(uriList.size > 0) {
+            LazyRow(
+                modifier = Modifier
+                    .height(300.dp)
+                    .fillMaxWidth()
+            ) {
+                items(uriList) {uri ->
+                    AsyncImage(
+                        model = uri,
+                        contentDescription = null,
+                        modifier = Modifier
+                    )
+                }
             }
-        )
+        }
 
         MSpacer(10)
 
