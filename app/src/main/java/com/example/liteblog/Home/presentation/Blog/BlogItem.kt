@@ -31,18 +31,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
+import com.example.liteblog.utils.Functions.MyFunction
+import com.example.liteblog.utils.Functions.MyFunction.Companion.parseTimePastToString
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.UserInfor
 import java.time.Instant
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview(showBackground = true)
 fun PreviewBlogItem() {
     BlogItem(
         blog = Blog(
             userinfor = UserInfor(firstname = "Vu", lastname = "Nguyen", username = "huyvu.3107"),
-            title = "What is Lorem Ipsum?",
+            title = "",
             description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
             comments = emptyList(),
             likes = emptyList(),
@@ -65,7 +66,9 @@ fun BlogItem(
     var liked by rememberSaveable {
         mutableStateOf(false)
     }
-
+    var timePost = MyFunction.getTimePastFromNow(
+        blog.timePost!!
+    )
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -77,23 +80,31 @@ fun BlogItem(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             UserIconDefault(userinfor = userInfor, size = 40, onClick = { /*TODO*/ })
-            Text(
-                text = userInfor.username,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(top = 5.dp)
-            )
+            Column {
+                Text(
+                    text = userInfor.username,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(top = 0.dp)
+                )
+                Text(
+                    text = parseTimePastToString(blog.timePost!!),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 13.sp
+                )
+            }
         }
 //        BODY
         MSpacer(10)
-
-        Text(
-                text = blog.title!!,
+        if(blog.title!!.length > 0) {
+            Text(
+                text = blog.title,
                 fontWeight = FontWeight.Medium,
                 fontSize = 17.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
+        }
 
         Text(
             text = blog.description!!,
