@@ -31,3 +31,15 @@ suspend fun FBGetBlogs() :List<Blog> {
     }
     return listsBlog
 }
+
+fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
+    val docs = Collection.BlogCollection.document(blog.id!!)
+    docs.addSnapshotListener { snapshot, e ->
+        if(e != null) {
+
+        }
+        if(snapshot != null && snapshot.exists()) {
+            onUpdadte (snapshot.toObject<Blog>()!!)
+        }
+    }
+}

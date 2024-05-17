@@ -8,7 +8,6 @@ import com.example.liteblog.utils.Model.Comment
 import com.example.liteblog.utils.Model.UserInfor
 import java.time.Instant
 
-@RequiresApi(Build.VERSION_CODES.O)
 val Sample_Blogs = listOf<Blog>(
         Blog(
             userinfor = UserInfor(firstname = "Vu", lastname = "Nguyen", username = "huyvu.3107"),

@@ -40,7 +40,7 @@ fun BlogScreen(
         items(state.listBlogs) {blog ->
             Column {
                 BlogItem(
-                    blog = blog,
+                    blogDefault = blog,
                     modifier = Modifier.padding(10.dp)
                 )
                 Box(modifier = Modifier
