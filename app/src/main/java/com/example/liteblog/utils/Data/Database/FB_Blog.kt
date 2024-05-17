@@ -43,3 +43,7 @@ fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
         }
     }
 }
+
+fun FBupdateBlog(blog: Blog) {
+    val docs = Collection.BlogCollection.document(blog.id!!).set(blog)
+}

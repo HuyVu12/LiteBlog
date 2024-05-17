@@ -1,5 +1,7 @@
 package com.example.liteblog.Home.presentation.Comment
 
+import UserData
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,13 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liteblog.Home.presentation.Blog.BI_BottomIcon
 import com.example.liteblog.Home.presentation.Blog.Sample_Blogs
-import com.example.liteblog.Home.presentation.Blog.Sample_Comments
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.Comment
 import com.example.liteblog.utils.Model.UserInfor
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.liteblog.utils.Data.Database.FBfetchAutoUpdateBlog
+import com.example.liteblog.utils.Data.Database.FBupdateBlog
 
 @Preview(showBackground = true)
 @Composable
@@ -100,19 +110,42 @@ fun CommentItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewScreenComment() {
-    ScreenComment(blog = Sample_Blogs[0])
+    ScreenComment(blogData = Sample_Blogs[0])
 }
+
+private fun onSubmit(
+    descrtiption: String,
+    comment: Comment,
+    blogData: Blog
+){
+    if(descrtiption.isNotBlank()) {
+        comment.description = descrtiption
+        comment.timePost = MyFunction.getCurrentTime()
+        val comments = blogData.comments.toMutableList()
+        Log.i("huyVu", "${blogData.comments}")
+        comments.add(0, comment)
+        blogData.comments = comments
+        Log.i("huyVu", "${blogData.comments}")
+        FBupdateBlog(blogData)
+    }
+}
+
 @Composable
 fun ScreenComment(
-    blog: Blog,
-    modifier: Modifier = Modifier
+    blogData: Blog,
 ) {
+    var descrtiption by rememberSaveable {
+        mutableStateOf("")
+    }
+    var comment = Comment(
+        userinfor = UserData.userinfor
+    )
     Column (modifier = Modifier
         .fillMaxSize()
         .padding(10.dp)){
         BI_BottomIcon(
-            likes = blog.likes.size,
-            comments = blog.comments.size,
+            likes = blogData.likes.size,
+            comments = blogData.comments.size,
             liked = true,
             modifier = Modifier,
             onClickLike = {},
@@ -120,7 +153,7 @@ fun ScreenComment(
         )
         MSpacer(10)
         LazyColumn(modifier = Modifier.weight(1f)) {
-            items(Sample_Comments) {comment ->
+            items(blogData.comments) { comment ->
                 CommentItem(
                     comment = comment,
                     modifier = Modifier.padding(vertical = 5.dp)
@@ -134,15 +167,24 @@ fun ScreenComment(
             modifier = Modifier.padding(top = 10.dp)
         ){
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = descrtiption,
+                onValueChange = {
+                    descrtiption = it
+                },
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(12.dp),
                 placeholder = {
                     Text(text = "Viết bình luận...")
                 }
             )
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = {
+                onSubmit(
+                    descrtiption = descrtiption,
+                    comment = comment,
+                    blogData = blogData
+                )
+                descrtiption = ""
+            }) {
                 Icon(imageVector = Icons.Default.Send, contentDescription = null)
             }
         }

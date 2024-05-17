@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.liteblog.Home.presentation.Comment.PreviewCommentItem
 import com.example.liteblog.Home.presentation.Comment.PreviewScreenComment
+import com.example.liteblog.Home.presentation.Comment.ScreenComment
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Data.Database.FBfetchAutoUpdateBlog
@@ -99,20 +101,27 @@ fun BlogItem(
     var isShowComment by rememberSaveable {
         mutableStateOf(false)
     }
-    var isShowMoreImage by rememberSaveable {
-        mutableStateOf(false)
-    }
+
     if(isShowComment) {
         ModalBottomSheet(
             onDismissRequest = {isShowComment = false},
             sheetState = rememberModalBottomSheetState(
                 skipPartiallyExpanded = true
             ),
-
+            dragHandle = {
+                Column {
+                    MSpacer(10)
+                    Text(text = "Bình luận", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+                    MSpacer(10)
+                }
+            }
         ) {
-            PreviewScreenComment()
+            ScreenComment(
+                blogData = blog
+            )
         }
     }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -178,15 +187,6 @@ fun BlogItem(
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(12.dp))
                             .height(300.dp)
-//                            .border(
-//                                width = 0.5.dp,
-//                                color = MaterialTheme.colorScheme.secondary,
-//                                shape = RoundedCornerShape(12.dp)
-//                            )
-//                            .requiredHeight(
-//                                if (isShowMoreImage) 600.dp
-//                                else 300.dp
-//                            )
                     )
                 }
             }
