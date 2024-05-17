@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
 class LoginViewModel:ViewModel() {
     private val _state = MutableStateFlow(LoginScreenState());
     val state = _state.asStateFlow()

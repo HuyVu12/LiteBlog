@@ -1,12 +1,16 @@
 package com.example.liteblog.Home.presentation.Blog
 
 import android.net.Uri
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +18,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -166,16 +171,19 @@ fun BlogItem(
                 lineHeight = 18.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = if(showAllDescription) Int.MAX_VALUE else 4,
-                modifier = Modifier.clickable {
-                    showAllDescription = !showAllDescription
-                }
+                modifier = Modifier
+                    .clickable {
+                        showAllDescription = !showAllDescription
+                    }
+                    .animateContentSize()
+
             )
         }
         if(blog.imageList != null && blog.imageList!!.size > 0) {
             MSpacer(10)
             LazyRow(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth().height(300.dp)
                 ,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -186,7 +194,7 @@ fun BlogItem(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(12.dp))
-                            .height(300.dp)
+                            .fillParentMaxHeight()
                     )
                 }
             }
