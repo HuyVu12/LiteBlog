@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -50,6 +52,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import com.example.liteblog.Home.presentation.Blog.component.FullImageScreen
 import com.example.liteblog.Home.presentation.Comment.PreviewCommentItem
 import com.example.liteblog.Home.presentation.Comment.PreviewScreenComment
 import com.example.liteblog.Home.presentation.Comment.ScreenComment
@@ -77,7 +81,8 @@ fun PreviewBlogItem() {
             reports = emptyList(),
             timePost = Instant.now().toEpochMilli(),
         ),
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier.padding(10.dp),
+        selectImage = {}
     )
 }
 
@@ -86,6 +91,7 @@ fun PreviewBlogItem() {
 fun BlogItem(
     blogDefault: Blog,
     modifier: Modifier = Modifier,
+    selectImage: (String) -> Unit
 ) {
     var blog by remember {
         mutableStateOf(blogDefault)
@@ -126,7 +132,6 @@ fun BlogItem(
             )
         }
     }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -176,14 +181,14 @@ fun BlogItem(
                         showAllDescription = !showAllDescription
                     }
                     .animateContentSize()
-
             )
         }
         if(blog.imageList != null && blog.imageList!!.size > 0) {
             MSpacer(10)
             LazyRow(
                 modifier = Modifier
-                    .fillMaxWidth().height(300.dp)
+                    .fillMaxWidth()
+                    .height(300.dp)
                 ,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -194,8 +199,19 @@ fun BlogItem(
                         contentDescription = null,
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(12.dp))
-                            .fillParentMaxHeight()
+                            .clickable {
+                                selectImage(uri)
+                            }
                     )
+//                    Image(
+//                        painter = rememberAsyncImagePainter(model = uri),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .clip(shape = RoundedCornerShape(12.dp))
+//                            .clickable {
+//                                selectImage(uri)
+//                            }
+//                    )
                 }
             }
         }

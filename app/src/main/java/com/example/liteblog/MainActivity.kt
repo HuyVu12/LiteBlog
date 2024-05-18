@@ -1,12 +1,10 @@
 package com.example.liteblog
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -17,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.presentation.CreateBlog.presentation.CreateBlogScreen
 import com.example.liteblog.Home.presentation.Main.CheckScreen
+import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
 import com.example.liteblog.Login.presentation.LoginScreen
 import com.example.liteblog.Register.presentation.RegisterScreen
 import com.example.liteblog.Setting.MainSetting.presentation.MainSettingScreen
@@ -59,6 +58,7 @@ val ROUTE_BLOG = "blog"
 val ROUTE_CREATE_BLOG = "create_blog"
 val ROUTE_SETTINGS = "settings"
 val ROUTE_PICK_SINGLE_PHOTO = "pick_single_photo"
+val ROUTE_LAB_AI = "VertexApi"
 
 @Composable
 fun MainApp() {
@@ -81,6 +81,11 @@ fun MainApp() {
         }
         composable(ROUTE_PICK_SINGLE_PHOTO) {
             PickSinglePhoto(navController)
+        }
+        composable(ROUTE_LAB_AI) {
+            VertexApiScreen(
+                navController
+            )
         }
     }
 }

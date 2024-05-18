@@ -80,5 +80,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 //    Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
+    // add the dependency for the Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
 
 }

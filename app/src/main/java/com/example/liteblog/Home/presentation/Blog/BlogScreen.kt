@@ -1,5 +1,6 @@
 package com.example.liteblog.Home.presentation.Blog
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -16,11 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.liteblog.Home.presentation.Blog.component.FullImageScreen
 import kotlin.math.log
 
 @Preview(showBackground = true)
@@ -29,12 +35,24 @@ fun PreviewBlogScreen() {
     BlogScreen()
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun BlogScreen(
     modifier: Modifier = Modifier,
     viewModel: BlogScreenViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    var selectImage:String? by rememberSaveable {
+        mutableStateOf(null)
+    }
+    if(selectImage!=null) {
+        FullImageScreen(
+            uriImage = selectImage!!,
+            onDismiss = { selectImage = null },
+            modifier = Modifier.zIndex(1f)
+        )
+    }
+//    else
     LazyVerticalGrid(
         columns = GridCells.Fixed(1),
         modifier = modifier
@@ -43,7 +61,8 @@ fun BlogScreen(
             Column {
                 BlogItem(
                     blogDefault = blog,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(10.dp),
+                    selectImage = {selectImage = it}
                 )
                 Box(modifier = Modifier
                     .fillMaxWidth()
