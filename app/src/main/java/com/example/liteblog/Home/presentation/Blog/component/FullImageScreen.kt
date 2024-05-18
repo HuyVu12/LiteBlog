@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,10 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -55,6 +58,17 @@ fun PhotoImage(uri: String, modifier: Modifier = Modifier) {
     )
 }
 @Composable
+fun Scrim(
+    modifier: Modifier = Modifier,
+    onClose: () ->Unit
+) {
+    Box(modifier = modifier
+        .fillMaxSize()
+        .clickable { onClose() }
+        .background(color = Color.Gray.copy(alpha = 0.75f))
+    )
+}
+@Composable
 fun FullImageScreen(
     uriImage: String,
     onDismiss: () -> Unit,
@@ -67,16 +81,4 @@ fun FullImageScreen(
         Scrim(onClose = {onDismiss()})
         PhotoImage(uriImage)
     }
-}
-
-@Composable
-fun Scrim(
-    modifier: Modifier = Modifier,
-    onClose: () ->Unit
-) {
-    Box(modifier = modifier
-        .fillMaxSize()
-        .clickable { onClose() }
-        .background(color = Color.Gray.copy(alpha = 0.75f))
-    )
 }

@@ -203,15 +203,6 @@ fun BlogItem(
                                 selectImage(uri)
                             }
                     )
-//                    Image(
-//                        painter = rememberAsyncImagePainter(model = uri),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .clip(shape = RoundedCornerShape(12.dp))
-//                            .clickable {
-//                                selectImage(uri)
-//                            }
-//                    )
                 }
             }
         }

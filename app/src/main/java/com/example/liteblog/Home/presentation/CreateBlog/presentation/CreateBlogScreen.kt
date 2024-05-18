@@ -45,6 +45,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -53,6 +54,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import coil.compose.AsyncImage
@@ -177,16 +179,18 @@ fun CreateBlogMainScreen(
                     minLines = 10,
                     enabled = !state.isLoading
                 )
+                MSpacer(10)
                 LazyRow(
-                    contentPadding = PaddingValues(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ){
                     items(viewModel.listImages) {uriImage ->
                         AsyncImage(
                             model = uriImage,
                             contentDescription = null,
                             modifier = Modifier
-                                .widthIn(0.dp, 400.dp)
-                                .heightIn(0.dp, 400.dp)
+                                .widthIn(0.dp, 300.dp)
+                                .heightIn(0.dp, 300.dp)
+                                .clip(shape = RoundedCornerShape(12.dp))
                                 .wrapContentHeight(),
                             )
                         Divider()
