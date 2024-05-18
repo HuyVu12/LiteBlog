@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.liteblog.Home.presentation.component.HS_TopAppBar
+import com.example.liteblog.Home.component.HS_TopAppBar
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.ROUTE_LOGIN
 import com.example.liteblog.utils.Component.MyBasicTopBar

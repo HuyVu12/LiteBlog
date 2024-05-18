@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.liteblog.Home.presentation.CreateBlog.presentation.CreateBlogScreen
-import com.example.liteblog.Home.presentation.Main.CheckScreen
+import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogScreen
+import com.example.liteblog.Home.Main.CheckScreen
 import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
-import com.example.liteblog.Login.presentation.LoginScreen
-import com.example.liteblog.Register.presentation.RegisterScreen
+import com.example.liteblog.Login.LoginScreen
+import com.example.liteblog.Register.RegisterScreen
 import com.example.liteblog.Setting.MainSetting.presentation.MainSettingScreen
 import com.example.liteblog.ui.theme.LiteBlogTheme
 import com.example.liteblog.utils.Functions.PickSinglePhoto
