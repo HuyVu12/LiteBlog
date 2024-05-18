@@ -1,5 +1,6 @@
 package com.example.liteblog.utils.Component
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -28,7 +29,8 @@ fun Preview_MyBasicTopBar() {
 @Composable
 fun MyBasicTopBar(
     navController: NavController,
-    title: @Composable () -> Unit
+    title: @Composable () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = title,
@@ -37,5 +39,6 @@ fun MyBasicTopBar(
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
         },
+        actions = actions
     )
 }

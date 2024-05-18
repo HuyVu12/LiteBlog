@@ -13,12 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.Follow.FindUser.FindUserScreen
+import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
 import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogScreen
 import com.example.liteblog.Home.Main.CheckScreen
 import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
 import com.example.liteblog.Login.LoginScreen
 import com.example.liteblog.Register.RegisterScreen
-import com.example.liteblog.Setting.MainSetting.presentation.MainSettingScreen
+import com.example.liteblog.Setting.MainSetting.MainSettingScreen
 import com.example.liteblog.ui.theme.LiteBlogTheme
 import com.example.liteblog.utils.Functions.PickSinglePhoto
 
@@ -59,6 +61,8 @@ val ROUTE_CREATE_BLOG = "create_blog"
 val ROUTE_SETTINGS = "settings"
 val ROUTE_PICK_SINGLE_PHOTO = "pick_single_photo"
 val ROUTE_LAB_AI = "VertexApi"
+val ROUTE_FRIEND = "friend"
+val ROUTE_FIND_USER = "find_user"
 
 @Composable
 fun MainApp() {
@@ -85,6 +89,16 @@ fun MainApp() {
         composable(ROUTE_LAB_AI) {
             VertexApiScreen(
                 navController
+            )
+        }
+        composable(ROUTE_FRIEND) {
+            MyFollowerScreen(
+                navController = navController
+            )
+        }
+        composable(ROUTE_FIND_USER) {
+            FindUserScreen(
+                navController = navController
             )
         }
     }

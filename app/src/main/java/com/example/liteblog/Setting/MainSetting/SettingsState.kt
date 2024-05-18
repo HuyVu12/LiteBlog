@@ -1,4 +1,4 @@
-package com.example.liteblog.Setting.MainSetting.presentation
+package com.example.liteblog.Setting.MainSetting
 
 data class SettingsState(
     var isExit: Boolean = false,

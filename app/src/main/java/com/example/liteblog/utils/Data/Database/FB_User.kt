@@ -1,5 +1,6 @@
 package com.example.liteblog.utils.Data.Database
 
+import UserData.username
 import android.util.Log
 import com.example.liteblog.utils.Data.Database.Collection.UserCollection
 import com.example.liteblog.utils.Data.Database.Collection.UserInforCollection
@@ -9,25 +10,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
-
-object Collection {
-    val db = Firebase.firestore
-    val UserInforCollection by lazy {
-        db.collection("user_infors")
-    }
-    val UserCollection by lazy {
-        db.collection("users")
-    }
-    val BlogCollection by lazy {
-        db.collection("blogs")
-    }
-}
-
 suspend fun FBgetUserInforByUsername(username: String): UserInfor? {
     try {
         val doc = UserInforCollection.document(username).get().await()
         if(doc.exists()) {
-            Log.i("huyvu", "${doc.toObject<UserInfor>()}")
             return doc.toObject<UserInfor>()
         }
         else return null
@@ -36,7 +22,6 @@ suspend fun FBgetUserInforByUsername(username: String): UserInfor? {
     }
     return null
 }
-
 suspend fun FBcreateUser(user: User) {
     val userInfor = UserInfor(
         firstname = user.firstname?:"",
@@ -50,7 +35,6 @@ suspend fun FBcreateUser(user: User) {
 
     }
 }
-
 suspend fun FBgetUserByUsernameAndPassword(username: String, password: String): User? {
     try {
         val query = UserCollection
