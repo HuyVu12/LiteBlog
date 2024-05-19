@@ -1,4 +1,4 @@
-package com.example.liteblog.Follow.MyFollower
+package com.example.liteblog.Follow.Follower
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
@@ -30,43 +30,45 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.Follow.MyFollower.MyFollowerViewModel
 import com.example.liteblog.Follow.components.ItemFriendDefault
 import com.example.liteblog.ROUTE_FIND_USER
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.MyBasicTopBar
 import com.example.liteblog.utils.Component.MyTextField
 
+
 @Preview(showBackground = true)
 @Composable
-fun PreViewMyFollowScreen() {
-    MyFollowerScreen()
+fun PreViewFollowScreen() {
+    FollowerScreen()
 }
 @Composable
-fun MyFollowerScreen(
+fun FollowerScreen(
     navController: NavController = rememberNavController(),
 ) {
     Scaffold(
         topBar = {
             MyBasicTopBar(
                 navController = navController,
-                 title = {
-                    Text(text = "Theo dõi", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                title = {
+                    Text(text = "Người Theo dõi", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
                 },
-                actions = {
-                    TextButton(onClick = { navController.navigate(ROUTE_FIND_USER) }) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = null)
-                    }
-                }
+//                actions = {
+//                    TextButton(onClick = { navController.navigate(ROUTE_FIND_USER) }) {
+//                        Icon(imageVector = Icons.Default.Search, contentDescription = null)
+//                    }
+//                }
             )
         }
     ) {
-        MainMyFollowerScreen(modifier = Modifier.padding(it))
+        MainFollowerScreen(modifier = Modifier.padding(it))
     }
 }
 @Composable
-fun MainMyFollowerScreen(
+fun MainFollowerScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyFollowerViewModel = viewModel()
+    viewModel: FollowerViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
     AnimatedVisibility(!state.isLoading) {
@@ -77,13 +79,13 @@ fun MainMyFollowerScreen(
             .padding(horizontal = 15.dp),
     ) {
         MyTextField(
-            value = viewModel.friendInput,
-            onValueChange = {viewModel.friendInput = it},
+            value = viewModel.textInput,
+            onValueChange = {viewModel.textInput = it},
             modifier = Modifier
                 .fillMaxWidth(),
             trailingIcon = {
-                if(viewModel.friendInput.isNotEmpty()) {
-                    IconButton(onClick = { viewModel.friendInput = "" }) {
+                if(viewModel.textInput.isNotEmpty()) {
+                    IconButton(onClick = { viewModel.textInput = "" }) {
                         Icon(imageVector = Icons.Default.Close, contentDescription = null)
                     }
                 }
@@ -95,19 +97,19 @@ fun MainMyFollowerScreen(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    viewModel.onFindFriend()
+                    viewModel.onFind()
                 }
             ),
         )
         MSpacer(10)
         Text(
-            text = "${state.follow.myFollowers.size} người dùng",
+            text = "${state.follow.followers.size} người dùng",
             fontSize = 20.sp,
             fontWeight = FontWeight.Normal
-            )
-        MSpacer(15)
+        )
+        MSpacer(10)
         LazyColumn {
-            items(state.follow.myFollowers) { userInfor ->
+            items(state.follow.followers) { userInfor ->
                 MSpacer(10)
                 ItemFriendDefault(user = userInfor)
                 MSpacer(10)

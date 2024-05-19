@@ -140,6 +140,7 @@ fun ScreenComment(
     var comment = Comment(
         userinfor = UserData.userinfor
     )
+
     Column (modifier = Modifier
         .fillMaxSize()
         .padding(10.dp)){

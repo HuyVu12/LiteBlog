@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +66,7 @@ fun Scrim(
     Box(modifier = modifier
         .fillMaxSize()
         .clickable { onClose() }
-        .background(color = Color.Gray.copy(alpha = 0.75f))
+        .background(color = MaterialTheme.colorScheme.surface.copy(alpha = .7f))
     )
 }
 @Composable

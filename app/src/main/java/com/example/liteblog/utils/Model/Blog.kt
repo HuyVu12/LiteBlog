@@ -10,7 +10,7 @@ data class Blog(
     var timePost: Long ?= null,
     var imageList: MutableList<String>? = null,
     var comments: List<Comment> = emptyList(),
-    val likes: List<UserInfor> = emptyList(),
+    var likes: List<UserInfor> = emptyList(),
     val reports: List<UserInfor> = emptyList(),
 )
 

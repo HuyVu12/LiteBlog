@@ -1,5 +1,6 @@
 package com.example.liteblog
 
+import UserData
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -14,11 +15,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Follow.FindUser.FindUserScreen
+import com.example.liteblog.Follow.Follower.FollowerScreen
 import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
 import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogScreen
 import com.example.liteblog.Home.Main.CheckScreen
 import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
 import com.example.liteblog.Login.LoginScreen
+import com.example.liteblog.PersonalPage.PersonalPageScreen
 import com.example.liteblog.Register.RegisterScreen
 import com.example.liteblog.Setting.MainSetting.MainSettingScreen
 import com.example.liteblog.ui.theme.LiteBlogTheme
@@ -61,8 +64,10 @@ val ROUTE_CREATE_BLOG = "create_blog"
 val ROUTE_SETTINGS = "settings"
 val ROUTE_PICK_SINGLE_PHOTO = "pick_single_photo"
 val ROUTE_LAB_AI = "VertexApi"
-val ROUTE_FRIEND = "friend"
+val ROUTE_MY_FOLLOWER = "my_follower"
 val ROUTE_FIND_USER = "find_user"
+val ROUTE_FOLLOWER = "follower"
+val ROUTE_PERSONAL_PAGE = "personal_page"
 
 @Composable
 fun MainApp() {
@@ -91,7 +96,7 @@ fun MainApp() {
                 navController
             )
         }
-        composable(ROUTE_FRIEND) {
+        composable(ROUTE_MY_FOLLOWER) {
             MyFollowerScreen(
                 navController = navController
             )
@@ -99,6 +104,17 @@ fun MainApp() {
         composable(ROUTE_FIND_USER) {
             FindUserScreen(
                 navController = navController
+            )
+        }
+        composable(ROUTE_FOLLOWER) {
+            FollowerScreen(
+                navController
+            )
+        }
+        composable(ROUTE_PERSONAL_PAGE) {
+            PersonalPageScreen(
+                navController = navController,
+                userInfor = UserData.userinfor
             )
         }
     }

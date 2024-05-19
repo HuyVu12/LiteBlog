@@ -1,5 +1,6 @@
 package com.example.liteblog.Home.Blog
 
+import UserData
 import android.net.Uri
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -41,12 +42,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,11 +62,14 @@ import com.example.liteblog.Home.Comment.PreviewScreenComment
 import com.example.liteblog.Home.Comment.ScreenComment
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
+import com.example.liteblog.utils.Data.Database.FBChangeLikeBlog
 import com.example.liteblog.utils.Data.Database.FBfetchAutoUpdateBlog
 import com.example.liteblog.utils.Functions.MyFunction.Companion.parseTimePastToString
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.UserInfor
 import com.example.liteblog.utils.Storage.FireStorage
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.Instant
 
 val DEBUG = true
@@ -96,23 +102,24 @@ fun BlogItem(
     var blog by remember {
         mutableStateOf(blogDefault)
     }
+    var liked by remember {
+        mutableStateOf(blog.likes.contains((UserData.userinfor)))
+    }
     FBfetchAutoUpdateBlog(
         blog = blog,
         onUpdadte = {
             blog = it
+            liked = it.likes.contains((UserData.userinfor))
         }
     )
     val userInfor = blog.userinfor!!
     var showAllDescription by rememberSaveable {
         mutableStateOf(false)
     }
-    var liked by rememberSaveable {
-        mutableStateOf(false)
-    }
+
     var isShowComment by rememberSaveable {
         mutableStateOf(false)
     }
-
     if(isShowComment) {
         ModalBottomSheet(
             onDismissRequest = {isShowComment = false},
@@ -201,7 +208,8 @@ fun BlogItem(
                             .clip(shape = RoundedCornerShape(12.dp))
                             .clickable {
                                 selectImage(uri)
-                            }
+                            },
+                        filterQuality = FilterQuality.None
                     )
                 }
             }
@@ -212,7 +220,9 @@ fun BlogItem(
             comments = blog.comments.size,
             liked = liked,
             onClickLike = {
-                liked = !liked
+                runBlocking {
+                    FBChangeLikeBlog(blog = blog)
+                }
             },
             onShowComment = {
                 isShowComment = true
@@ -231,7 +241,7 @@ fun BI_BottomIcon(
     onClickLike: () -> Unit,
     onShowComment: () -> Unit
 ) {
-    val numLike = likes + if(liked == true) 1 else 0
+    val numLike = likes
     Row (
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -253,8 +263,8 @@ fun BI_BottomIcon(
                 text =
                     if(numLike == 0) "0"
                     else if(liked == false) "${likes}"
-                    else if(likes == 0) "1"
-                    else "bạn và ${likes} người khác",
+                    else if(likes == 1) "1"
+                    else "bạn và ${likes-1} người khác",
                 fontSize = 15.sp
             )
         }

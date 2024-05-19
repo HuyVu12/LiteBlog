@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
-import com.example.liteblog.utils.Data.Database.followUser
+import com.example.liteblog.utils.Data.Database.FBfollowUser
 import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +38,7 @@ class FindUserViewModel: ViewModel() {
             _state.update {
                 it.copy(isLoading = true)
             }
-            followUser(friendFind!!)
+            FBfollowUser(friendFind!!)
             _state.update {
                 it.copy(isLoading = false)
             }

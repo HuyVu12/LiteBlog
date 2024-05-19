@@ -4,10 +4,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.liteblog.utils.Data.Database.FBgetFollow
+import com.example.liteblog.utils.Model.Follow
 import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 class UserStorage(private val context: Context) {
     companion object {
@@ -29,4 +32,5 @@ class UserStorage(private val context: Context) {
 object UserData {
     var username = ""
     var userinfor = UserInfor()
+    var follow = Follow()
 }

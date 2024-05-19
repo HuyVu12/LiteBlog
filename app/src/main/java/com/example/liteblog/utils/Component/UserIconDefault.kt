@@ -13,10 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.liteblog.utils.Model.User
 import com.example.liteblog.utils.Model.UserInfor
 
@@ -44,15 +47,28 @@ fun UserIconDefault(
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .border(.5.dp, MaterialTheme.colorScheme.secondary, shape = CircleShape)
     ){
-      Text(
-          text = name,
-          fontSize = (
-                  if(name.length == 1) size / 2
-                  else size/name.length + name.length
-                  ).sp,
-          modifier = Modifier.align(Alignment.Center),
-          textAlign = TextAlign.Center,
-          color = MaterialTheme.colorScheme.onSecondaryContainer
-      )
+        if(userinfor.avatar == null || userinfor.avatar!!.isEmpty()) {
+            Text(
+                text = name,
+                fontSize = (
+                        if(name.length == 1) size / 2
+                        else size/name.length + name.length
+                        ).sp,
+                modifier = Modifier.align(Alignment.Center),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+        else {
+            AsyncImage(
+                model = userinfor.avatar,
+                contentDescription = null,
+                filterQuality = FilterQuality.None,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .align(Alignment.Center),
+                )
+
+        }
     }
 }

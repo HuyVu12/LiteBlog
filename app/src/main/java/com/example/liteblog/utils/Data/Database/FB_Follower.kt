@@ -12,25 +12,27 @@ enum class ResultRequest(message: String) {
 
 }
 
-suspend fun getFollow(userInfor: UserInfor): Follow {
+suspend fun FBgetFollow(userInfor: UserInfor): Follow {
     val doc = Collection.FollowCollection.document(userInfor.username).get().await()
     if(doc.exists()) {
         return doc.toObject<Follow>()!!
     }
     else return Follow()
 }
-suspend fun followUser(userInfor: UserInfor) {
-    var my_followers = getFollow(UserData.userinfor)
-    var user_follower = getFollow(userInfor)
-    Log.i("HuyVu", "${my_followers}")
+suspend fun FBfollowUser(userInfor: UserInfor) {
+    if (userInfor.username == UserData.username) return
+
+    var follower = FBgetFollow(UserData.userinfor)
+    var user_follower = FBgetFollow(userInfor)
+    Log.i("HuyVu", "${follower}")
     Log.i("HuyVu", "${user_follower}")
-    if(!my_followers.myFollowers.contains(userInfor)) {
-        val mu_my_followers = my_followers.myFollowers.toMutableList()
+    if(!follower.myFollowers.contains(userInfor)) {
+        val mu_my_followers = follower.myFollowers.toMutableList()
         mu_my_followers.add(userInfor)
-        my_followers.myFollowers = mu_my_followers
+        follower.myFollowers = mu_my_followers
         Collection.FollowCollection
             .document(UserData.username)
-            .set(my_followers).await()
+            .set(follower).await()
     }
     if(!user_follower.followers.contains(UserData.userinfor)) {
         val mu_user_followers = user_follower.followers.toMutableList()

@@ -8,14 +8,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -33,13 +39,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.liteblog.ROUTE_FRIEND
+import com.example.liteblog.ROUTE_FIND_USER
+import com.example.liteblog.ROUTE_FOLLOWER
+import com.example.liteblog.ROUTE_LAB_AI
 import com.example.liteblog.ROUTE_LOGIN
-import com.example.liteblog.utils.Component.MSpacer
+import com.example.liteblog.ROUTE_MY_FOLLOWER
+import com.example.liteblog.ROUTE_PERSONAL_PAGE
+import com.example.liteblog.Setting.MainSetting.component.CardItemFunction
 import com.example.liteblog.utils.Component.MyBasicTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,36 +93,62 @@ fun MainSettingsScreen(
         if(state.isLoading){
             LinearProgressIndicator()
         }
-        Card(
-            onClick = { navController.navigate(ROUTE_FRIEND)},
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 5.dp
-            ),
-            modifier = Modifier.padding(20.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier.weight(1f)
         ) {
-            Column (
-                modifier = Modifier.padding(15.dp)
-            ){
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp)
-                    )
-                MSpacer(5)
-                Text(
-                    text = "Người theo dõi",
-                    fontSize = 16.sp
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_PERSONAL_PAGE)
+                    },
+                    textValue = "Trang cá nhân",
+                    icon = Icons.Default.AccountCircle
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_MY_FOLLOWER)
+                    },
+                    textValue = "Người bạn theo dõi",
+                    icon = Icons.Outlined.Star
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_FOLLOWER)
+                    },
+                    textValue = "Người theo dõi",
+                    icon = Icons.Outlined.Favorite
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_FIND_USER)
+                    },
+                    textValue = "Tìm kiếm",
+                    icon = Icons.Default.Search
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_LAB_AI)
+                    },
+                    textValue = "LAB_AI",
+                    icon = Icons.Default.Build
                 )
             }
         }
+        Divider()
         TextButton(
             onClick = { viewModel.onLogout(datastorage) },
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                contentColor = MaterialTheme.colorScheme.error,
 //                containerColor = MaterialTheme.colorScheme.errorContainer
             ),
             enabled = !state.isLoading,
@@ -121,11 +156,11 @@ fun MainSettingsScreen(
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(1.dp))
                 .padding(10.dp)
-                .border(
-                    1.dp,
-                    MaterialTheme.colorScheme.onErrorContainer,
-                    RoundedCornerShape(10.dp)
-                )
+//                .border(
+//                    1.dp,
+//                    MaterialTheme.colorScheme.onErrorContainer,
+//                    RoundedCornerShape(10.dp)
+//                )
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -138,8 +173,6 @@ fun MainSettingsScreen(
                 )
             }
         }
-
-
     }
 }
 

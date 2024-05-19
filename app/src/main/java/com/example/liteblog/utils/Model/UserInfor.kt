@@ -4,4 +4,5 @@ data class UserInfor(
     var firstname: String = "",
     var lastname: String = "",
     var username: String = "",
+    var avatar: String? = null
 )

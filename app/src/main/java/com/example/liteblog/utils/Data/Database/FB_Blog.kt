@@ -1,5 +1,6 @@
 package com.example.liteblog.utils.Data.Database
 
+import UserData
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.liteblog.utils.Functions.MyFunction
@@ -21,7 +22,6 @@ suspend fun FBcreateBlog(blog: Blog) {
 
     }
 }
-
 suspend fun FBGetBlogs() :List<Blog> {
     val docs = Collection.BlogCollection.orderBy("timePost", Query.Direction.DESCENDING).limit(20).get().await()
     val listsBlog = mutableListOf<Blog>()
@@ -31,7 +31,6 @@ suspend fun FBGetBlogs() :List<Blog> {
     }
     return listsBlog
 }
-
 fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
     val docs = Collection.BlogCollection.document(blog.id!!)
     docs.addSnapshotListener { snapshot, e ->
@@ -42,6 +41,17 @@ fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
             onUpdadte (snapshot.toObject<Blog>()!!)
         }
     }
+}
+suspend fun FBChangeLikeBlog(blog: Blog) {
+    var mu_likes = blog.likes.toMutableList()
+    if(mu_likes.contains(UserData.userinfor)) {
+        mu_likes.remove(UserData.userinfor)
+    }
+    else {
+        mu_likes.add(UserData.userinfor)
+    }
+    blog.likes = mu_likes
+    Collection.BlogCollection.document(blog.id!!).set(blog)
 }
 
 fun FBupdateBlog(blog: Blog) {
