@@ -38,6 +38,7 @@ fun UserIconDefault(
     size: Int,
     onClick: ()->Unit,
     modifier: Modifier = Modifier,
+    uriImage: Any? = null
 ) {
     var name = (if (userinfor.firstname.length <= 5) userinfor.firstname else userinfor.firstname[0]).toString()
     Box (
@@ -47,7 +48,7 @@ fun UserIconDefault(
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .border(.5.dp, MaterialTheme.colorScheme.secondary, shape = CircleShape)
     ){
-        if(userinfor.avatar == null || userinfor.avatar!!.isEmpty()) {
+        if((userinfor.avatar == null || userinfor.avatar!!.isEmpty()) && uriImage == null) {
             Text(
                 text = name,
                 fontSize = (
@@ -61,7 +62,7 @@ fun UserIconDefault(
         }
         else {
             AsyncImage(
-                model = userinfor.avatar,
+                model = uriImage ?: userinfor.avatar,
                 contentDescription = null,
                 filterQuality = FilterQuality.None,
                 contentScale = ContentScale.Crop,

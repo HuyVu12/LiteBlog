@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,7 +52,7 @@ fun VertexApiMainScreen(
 ) {
     val state by viewModel.state.collectAsState()
     Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 10.dp),
+        modifier = modifier.fillMaxSize().padding(10.dp, top = 0.dp),
     ) {
         if(state.isPromtLoading) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -65,8 +66,10 @@ fun VertexApiMainScreen(
                 Text(text = viewModel.generateText)
             }
         }
-
-        Row (modifier = Modifier.fillMaxWidth()){
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
             OutlinedTextField(
                 value = viewModel.promptText,
                 onValueChange = {viewModel.promptText = it},
@@ -74,7 +77,7 @@ fun VertexApiMainScreen(
                 label = {
                     Text(text = "Prompt")
                 },
-                enabled = !state.isPromtLoading
+                enabled = !state.isPromtLoading,
             )
             IconButton(
                 onClick = { viewModel.onGenarate() },

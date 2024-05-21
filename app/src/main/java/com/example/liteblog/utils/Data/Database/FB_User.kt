@@ -2,13 +2,17 @@ package com.example.liteblog.utils.Data.Database
 
 import UserData.username
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import com.example.liteblog.utils.Data.Database.Collection.UserCollection
 import com.example.liteblog.utils.Data.Database.Collection.UserInforCollection
+import com.example.liteblog.utils.Model.Blog
+import com.example.liteblog.utils.Model.Follow
 import com.example.liteblog.utils.Model.User
 import com.example.liteblog.utils.Model.UserInfor
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 suspend fun FBgetUserInforByUsername(username: String): UserInfor? {
     try {
@@ -52,5 +56,42 @@ suspend fun FBgetUserByUsernameAndPassword(username: String, password: String): 
         }
     } catch (e: Exception) {
         return null
+    }
+}
+suspend fun FBupdateAllUserInfor(userInfor: UserInfor) {
+    val docUserInfor = Collection.UserInforCollection.document(userInfor.username).set(userInfor).await()
+    val docsFollow = Collection.FollowCollection.get().await()
+    for(docFollow in docsFollow) {
+        val follow = docFollow.toObject<Follow>()
+        val follow1 = follow.followers.toMutableList()
+        val follow2 = follow.myFollowers.toMutableList()
+        for(i in 0..<follow1.size) {
+            if(follow1[i].username == userInfor.username) {
+                follow1[i] = userInfor
+            }
+        }
+        for(i in 0..<follow2.size) {
+            if(follow2[i].username == userInfor.username) {
+                follow2[i] = userInfor
+            }
+        }
+        follow.followers = follow1
+        follow.myFollowers = follow2
+        Collection.FollowCollection.document(docFollow.id).set(follow).await()
+    }
+    val docsBlog = Collection.BlogCollection.get().await()
+    for(docBlog in docsBlog) {
+        var blog = docBlog.toObject<Blog>()
+        val mu_comments = blog.comments.toMutableList()
+        for (i in 0..< mu_comments.size) {
+            if(mu_comments[i].userinfor!!.username == userInfor.username) {
+                mu_comments[i].userinfor = userInfor
+            }
+        }
+        if(blog.userinfor!!.username == userInfor.username) {
+            blog.userinfor = userInfor
+        }
+        blog.comments = mu_comments
+        Collection.BlogCollection.document(docBlog.id).set(blog).await()
     }
 }

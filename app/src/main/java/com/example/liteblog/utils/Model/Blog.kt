@@ -15,7 +15,7 @@ data class Blog(
 )
 
 data class Comment(
-    val userinfor: UserInfor? = null,
+    var userinfor: UserInfor? = null,
     var description: String ?= null,
     var timePost: Long ?= null,
     val likes: List<UserInfor> = emptyList(),

@@ -5,9 +5,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
+import com.example.liteblog.utils.Model.UserInfor
 import com.google.android.gms.tasks.Tasks.await
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.tasks.await
 
 suspend fun FBcreateBlog(blog: Blog) {
@@ -22,14 +24,23 @@ suspend fun FBcreateBlog(blog: Blog) {
 
     }
 }
-suspend fun FBGetBlogs() :List<Blog> {
-    val docs = Collection.BlogCollection.orderBy("timePost", Query.Direction.DESCENDING).limit(20).get().await()
-    val listsBlog = mutableListOf<Blog>()
+suspend fun FBGetBlogs(
+    userInfor: UserInfor? = null
+) :List<Blog> {
+    if(userInfor == null) {
+        val docs = Collection.BlogCollection.orderBy("timePost", Query.Direction.DESCENDING).limit(20).get().await()
+        val listsBlog = mutableListOf<Blog>()
 
-    for(doc in docs) {
-        listsBlog.add(doc.toObject<Blog>())
+        for(doc in docs) {
+            listsBlog.add(doc.toObject<Blog>())
+        }
+        return listsBlog
     }
-    return listsBlog
+    else {
+        val doc = Collection.BlogCollection.whereEqualTo("userinfor", UserData.userinfor).get().await()
+        return doc.toObjects()
+    }
+
 }
 fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
     val docs = Collection.BlogCollection.document(blog.id!!)
@@ -44,10 +55,15 @@ fun FBfetchAutoUpdateBlog(blog: Blog, onUpdadte : (Blog) -> Unit) {
 }
 suspend fun FBChangeLikeBlog(blog: Blog) {
     var mu_likes = blog.likes.toMutableList()
-    if(mu_likes.contains(UserData.userinfor)) {
-        mu_likes.remove(UserData.userinfor)
+    var type = 0
+    for(i in 0..<mu_likes.size) {
+        if(mu_likes[i].username == UserData.username) {
+            mu_likes.removeAt(i)
+            type = 1
+            break
+        }
     }
-    else {
+    if(type == 0) {
         mu_likes.add(UserData.userinfor)
     }
     blog.likes = mu_likes
@@ -56,4 +72,9 @@ suspend fun FBChangeLikeBlog(blog: Blog) {
 
 fun FBupdateBlog(blog: Blog) {
     val docs = Collection.BlogCollection.document(blog.id!!).set(blog)
+}
+
+suspend fun FBGetMyBlogs(): List<Blog> {
+    val doc = Collection.BlogCollection.whereEqualTo("userinfor", UserData.userinfor).get().await()
+    return doc.toObjects()
 }

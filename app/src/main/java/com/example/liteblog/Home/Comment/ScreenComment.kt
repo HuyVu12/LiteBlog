@@ -86,7 +86,7 @@ fun CommentItem(
                     .padding(10.dp)
             ) {
                 Text(
-                    text = comment.userinfor.username,
+                    text = comment.userinfor!!.username,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
                     color = MaterialTheme.colorScheme.onSecondaryContainer

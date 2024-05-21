@@ -45,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.ROUTE_FIND_USER
 import com.example.liteblog.ROUTE_FOLLOWER
 import com.example.liteblog.ROUTE_LAB_AI
+import com.example.liteblog.ROUTE_LAB_GENATATE_BLOG
 import com.example.liteblog.ROUTE_LOGIN
 import com.example.liteblog.ROUTE_MY_FOLLOWER
 import com.example.liteblog.ROUTE_PERSONAL_PAGE
@@ -139,7 +140,16 @@ fun MainSettingsScreen(
                     onClick = {
                         navController.navigate(ROUTE_LAB_AI)
                     },
-                    textValue = "LAB_AI",
+                    textValue = "Chat AI",
+                    icon = Icons.Default.Build
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
+                        navController.navigate(ROUTE_LAB_GENATATE_BLOG)
+                    },
+                    textValue = "Gợi ý AI",
                     icon = Icons.Default.Build
                 )
             }

@@ -19,6 +19,7 @@ import com.example.liteblog.Follow.Follower.FollowerScreen
 import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
 import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogScreen
 import com.example.liteblog.Home.Main.CheckScreen
+import com.example.liteblog.Labs.BlogPostCreater.presentation.BlogPostCreaterScreen
 import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
 import com.example.liteblog.Login.LoginScreen
 import com.example.liteblog.PersonalPage.PersonalPageScreen
@@ -68,6 +69,7 @@ val ROUTE_MY_FOLLOWER = "my_follower"
 val ROUTE_FIND_USER = "find_user"
 val ROUTE_FOLLOWER = "follower"
 val ROUTE_PERSONAL_PAGE = "personal_page"
+val ROUTE_LAB_GENATATE_BLOG = "Api_create_Blog"
 
 @Composable
 fun MainApp() {
@@ -115,6 +117,17 @@ fun MainApp() {
             PersonalPageScreen(
                 navController = navController,
                 userInfor = UserData.userinfor
+            )
+        }
+        composable(ROUTE_PERSONAL_PAGE) {
+            PersonalPageScreen(
+                navController = navController,
+                userInfor = UserData.userinfor
+            )
+        }
+        composable(ROUTE_LAB_GENATATE_BLOG) {
+            BlogPostCreaterScreen(
+                navController = navController
             )
         }
     }
