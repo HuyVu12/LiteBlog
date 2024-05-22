@@ -170,6 +170,7 @@ fun Main(
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done
                     ),
+                    enabled = !state.isLoading
                 )
                 MSpacer(0, 10)
                 Button(

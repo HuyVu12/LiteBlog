@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
@@ -52,7 +53,7 @@ fun VertexApiMainScreen(
 ) {
     val state by viewModel.state.collectAsState()
     Column(
-        modifier = modifier.fillMaxSize().padding(10.dp, top = 0.dp),
+        modifier = modifier.fillMaxSize().padding(10.dp, 0.dp, 10.dp, 10.dp),
     ) {
         if(state.isPromtLoading) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -78,6 +79,7 @@ fun VertexApiMainScreen(
                     Text(text = "Prompt")
                 },
                 enabled = !state.isPromtLoading,
+                shape = RoundedCornerShape(12.dp)
             )
             IconButton(
                 onClick = { viewModel.onGenarate() },
