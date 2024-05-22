@@ -60,7 +60,7 @@ fun ListBlogShow(
                     )
                     Box(modifier = Modifier
                         .fillMaxWidth()
-                        .height(0.5.dp)
+                        .height(6.dp)
                         .background(Color.LightGray))
                 }
             }

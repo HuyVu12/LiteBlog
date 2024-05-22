@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.liteblog.utils.Data.Database.FBcreateBlog
+import com.example.liteblog.utils.Data.Database.FB_Blog
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Storage.FireStorage
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,7 +36,7 @@ class CreateBlogViewModel: ViewModel() {
             for (image in listImages) {
                 imageList.add(FireStorage.getUrimage(FireStorage.uploadImage(image!!)).toString())
             }
-            FBcreateBlog(
+            FB_Blog.create(
                 Blog(
                     title = title,
                     description = description,

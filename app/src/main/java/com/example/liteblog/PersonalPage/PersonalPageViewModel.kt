@@ -8,7 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.liteblog.utils.Data.Database.Collection
-import com.example.liteblog.utils.Data.Database.FBGetBlogs
+import com.example.liteblog.utils.Data.Database.FB_Blog
 import com.example.liteblog.utils.Data.Database.FBupdateAllUserInfor
 import com.example.liteblog.utils.Model.UserInfor
 import com.example.liteblog.utils.Storage.FireStorage
@@ -50,7 +50,7 @@ class PersonalPageViewModel: ViewModel() {
             }
             _state.update {
                 it.copy(
-                    listBlogs = FBGetBlogs(userInfor = UserData.userinfor)
+                    listBlogs = FB_Blog.get(userInfor = UserData.userinfor)
                 )
             }
             _state.update {

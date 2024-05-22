@@ -2,7 +2,7 @@ package com.example.liteblog.Home.Blog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.liteblog.utils.Data.Database.FBGetBlogs
+import com.example.liteblog.utils.Data.Database.FB_Blog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -25,7 +25,7 @@ class BlogScreenViewModel:ViewModel() {
             }
             _state.update {
                 it.copy(
-                    listBlogs = FBGetBlogs()
+                    listBlogs = FB_Blog.get()
                 )
             }
             _state.update {

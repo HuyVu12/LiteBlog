@@ -1,6 +1,5 @@
 package com.example.liteblog.utils.Model
 
-import android.net.Uri
 
 data class Blog(
     var id: String? = null,
@@ -10,8 +9,9 @@ data class Blog(
     var timePost: Long ?= null,
     var imageList: MutableList<String>? = null,
     var comments: List<Comment> = emptyList(),
-    var likes: List<UserInfor> = emptyList(),
+    var likes: List<String> = emptyList(),
     val reports: List<UserInfor> = emptyList(),
+    val rating: Rating = Rating()
 )
 
 data class Comment(
@@ -20,4 +20,9 @@ data class Comment(
     var timePost: Long ?= null,
     val likes: List<UserInfor> = emptyList(),
     val reports: List<UserInfor> = emptyList(),
+)
+
+data class Rating(
+    var upRating: List<String> = emptyList(),
+    var downRating: List<String> = emptyList()
 )
