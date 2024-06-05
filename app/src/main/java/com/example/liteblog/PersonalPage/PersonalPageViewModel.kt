@@ -2,13 +2,16 @@ package com.example.liteblog.PersonalPage
 
 import UserData
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.utils.Data.Database.Collection
 import com.example.liteblog.utils.Data.Database.FB_Blog
+import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
 import com.example.liteblog.utils.Data.Database.FBupdateAllUserInfor
 import com.example.liteblog.utils.Model.UserInfor
 import com.example.liteblog.utils.Storage.FireStorage
@@ -22,6 +25,7 @@ class PersonalPageViewModel: ViewModel() {
     private val _state = MutableStateFlow(PresonalPageState())
     val state = _state.asStateFlow()
     var selectedImageUri: Uri? by mutableStateOf(null)
+    var userInfor: UserInfor? by mutableStateOf(null)
     fun saveData() {
         viewModelScope.launch {
             _state.update {
@@ -36,9 +40,34 @@ class PersonalPageViewModel: ViewModel() {
             }
         }
     }
-
-    init {
-        getBlogs()
+    fun initUser(username: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            userInfor = FBgetUserInforByUsername(username)
+            initBlog(userInfor!!)
+            _state.update {
+                it.copy(isLoading = false, isLoadData = false)
+            }
+        }
+    }
+    fun initBlog(userInfor: UserInfor) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+            _state.update {
+                it.copy(
+                    listBlogs = FB_Blog.get(userInfor = userInfor)
+                )
+            }
+            _state.update {
+                it.copy(isLoading = false)
+            }
+        }
     }
 
     fun getBlogs() {

@@ -1,6 +1,8 @@
 package com.example.liteblog.PersonalPage
 
 import UserData
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,8 +32,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,19 +60,35 @@ import com.example.liteblog.ROUTE_CREATE_BLOG
 @Composable
 fun PreviewPersonalPageScreen() {
     PersonalPageScreen(
-        userInfor = UserInfor(
+        userInforDefault = UserInfor(
             username = "huyvu_3107",
             firstname = "Vũ",
             lastname = "Huy"
         )
     )
 }
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun PersonalPageScreen(
     navController: NavController = rememberNavController(),
-    userInfor: UserInfor,
+    userInforDefault: UserInfor,
+    username: String = "",
     viewModel: PersonalPageViewModel = viewModel(),
 ) {
+    var userInfor by remember {
+        mutableStateOf(userInforDefault)
+    }
+    val state by viewModel.state.collectAsState()
+    LaunchedEffect(key1 = viewModel.userInfor) {
+        if(username == "" || username == UserData.username) {
+            viewModel.getBlogs()
+        }
+        else {
+            if(viewModel.userInfor == null)
+                viewModel.initUser(username = username)
+            else userInfor = viewModel.userInfor!!
+        }
+    }
     Scaffold (
         topBar = {
             MyBasicTopBar(
@@ -95,6 +117,7 @@ fun PersonalPageScreen(
             )
         }
     ){
+        if(!state.isLoadData)
         PersonalPageMainScreen(
             modifier = Modifier.padding(it),
             userInfor = userInfor,
@@ -117,6 +140,7 @@ fun PersonalPageMainScreen(
         }
     )
     val state by viewModel.state.collectAsState()
+
     ListBlogShow(
         somethingTop = {
             Column(
@@ -131,6 +155,7 @@ fun PersonalPageMainScreen(
                 }
                 MSpacer(20)
                 Box {
+                    if(userInfor.username == UserData.username)
                     Icon(
                         imageVector = if (viewModel.selectedImageUri == null) Icons.Default.Add else Icons.Default.Close,
                         contentDescription = null,
@@ -225,7 +250,8 @@ fun PersonalPageMainScreen(
             }
         },
         listBlogs = state.listBlogs,
-        modifier = modifier
+        modifier = modifier,
+        navController = navController
     )
 
 }

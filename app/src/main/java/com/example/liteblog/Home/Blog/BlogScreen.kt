@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.Blog.component.FullImageScreen
 import com.example.liteblog.Home.Blog.component.ListBlogShow
 import kotlin.math.log
@@ -29,7 +31,8 @@ fun PreviewBlogScreen() {
 @Composable
 fun BlogScreen(
     modifier: Modifier = Modifier,
-    viewModel: BlogScreenViewModel = viewModel()
+    viewModel: BlogScreenViewModel = viewModel(),
+    navController: NavController = rememberNavController()
 ) {
     val state by viewModel.state.collectAsState()
 //    var selectImage:String? by rememberSaveable {
@@ -62,6 +65,7 @@ fun BlogScreen(
 //    }
     ListBlogShow(
         modifier = modifier,
-        listBlogs = state.listBlogs
+        listBlogs = state.listBlogs,
+        navController = navController
     )
 }

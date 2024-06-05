@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.Blog.BlogItem
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Model.Blog
@@ -34,6 +36,7 @@ fun ListBlogShow(
     somethingTop: @Composable() ()->Unit = {},
     modifier: Modifier = Modifier,
     listBlogs: List<Blog>,
+    navController: NavController = rememberNavController()
 ) {
     if(listBlogs.size > 0) {
         var selectImage:String? by rememberSaveable {
@@ -56,12 +59,13 @@ fun ListBlogShow(
                     BlogItem(
                         blogDefault = blog,
                         modifier = Modifier.padding(10.dp),
-                        selectImage = {selectImage = it}
+                        selectImage = {selectImage = it},
+                        navController = navController
                     )
                     Box(modifier = Modifier
                         .fillMaxWidth()
-                        .height(6.dp)
-                        .background(Color.LightGray))
+                        .height(7.dp)
+                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)))
                 }
             }
         }

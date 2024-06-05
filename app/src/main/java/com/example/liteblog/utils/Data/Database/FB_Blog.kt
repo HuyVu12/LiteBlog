@@ -1,6 +1,7 @@
 package com.example.liteblog.utils.Data.Database
 
 import UserData
+import android.util.Log
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.Rating
@@ -48,7 +49,7 @@ class FB_Blog {
                 return listsBlog
             }
             else {
-                val doc = collection.whereEqualTo(Field.UserInfor.field_name, UserData.userinfor).get().await()
+                val doc = collection.whereEqualTo(Field.UserInfor.field_name, userInfor).get().await()
                 return doc.toObjects()
             }
 

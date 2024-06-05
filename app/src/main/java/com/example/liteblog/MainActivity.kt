@@ -2,6 +2,7 @@ package com.example.liteblog
 
 import UserData
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -11,9 +12,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.liteblog.Follow.FindUser.FindUserScreen
 import com.example.liteblog.Follow.Follower.FollowerScreen
 import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
@@ -56,6 +59,31 @@ class MainActivity : ComponentActivity() {
 //    Register("register"),
 //    Home("home")
 //}
+
+sealed class Screen(val route: String) {
+    object Login : Screen("login")
+    object Register : Screen("register")
+    object Home : Screen("home")
+    object Blog : Screen("blog")
+    object CreateBlog : Screen("create_blog")
+    object Settings : Screen("settings")
+    object PickSinglePhoto : Screen("pick_single_photo")
+    object VertexApi : Screen("VertexApi")
+    object MyFollower : Screen("my_follower")
+    object FindUser : Screen("find_user")
+    object Follower : Screen("follower")
+    object PersonalPage : Screen("personal_page")
+    object ApiCreateBlog : Screen("Api_create_Blog")
+
+    fun withArgs(vararg args: String): String {
+        return buildString {
+            append(route)
+            args.forEach { arg ->
+                append("/$arg")
+            }
+        }
+    }
+}
 
 val ROUTE_LOGIN = "login"
 val ROUTE_REGISTER = "register"
@@ -113,16 +141,28 @@ fun MainApp() {
                 navController
             )
         }
-        composable(ROUTE_PERSONAL_PAGE) {
+        composable(
+            route = Screen.PersonalPage.route + "/{username}",
+            arguments = listOf(
+                navArgument("username") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = ""
+                }
+            )
+        ) {
+            val username = it.arguments?.getString("username")
+            Log.i("HuyVu", username?:"")
             PersonalPageScreen(
                 navController = navController,
-                userInfor = UserData.userinfor
+                userInforDefault = UserData.userinfor,
+                username = username?:""
             )
         }
         composable(ROUTE_PERSONAL_PAGE) {
             PersonalPageScreen(
                 navController = navController,
-                userInfor = UserData.userinfor
+                userInforDefault = UserData.userinfor
             )
         }
         composable(ROUTE_LAB_GENATATE_BLOG) {

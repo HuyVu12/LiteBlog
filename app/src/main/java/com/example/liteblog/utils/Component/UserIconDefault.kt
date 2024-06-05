@@ -2,6 +2,7 @@ package com.example.liteblog.utils.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -47,6 +48,9 @@ fun UserIconDefault(
             .clip(shape = CircleShape)
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .border(.5.dp, MaterialTheme.colorScheme.secondary, shape = CircleShape)
+            .clickable {
+                onClick()
+            }
     ){
         if((userinfor.avatar == null || userinfor.avatar!!.isEmpty()) && uriImage == null) {
             Text(

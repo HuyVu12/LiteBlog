@@ -72,7 +72,10 @@ fun MainScreen(
     ) {paddingValues ->
         NavHost(navController = navControllerMain, startDestination = ROUTE_BLOG) {
             composable(ROUTE_BLOG) {
-                BlogScreen(modifier = Modifier.padding(paddingValues))
+                BlogScreen(
+                    modifier = Modifier.padding(paddingValues),
+                    navController = navController
+                )
             }
         }
     }

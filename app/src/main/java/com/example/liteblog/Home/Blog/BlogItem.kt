@@ -1,6 +1,7 @@
 package com.example.liteblog.Home.Blog
 
 import UserData
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,9 +33,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.Blog.component.MyBodyBlogItem
 import com.example.liteblog.Home.Blog.component.MyRatingButton
 import com.example.liteblog.Home.Comment.ScreenComment
+import com.example.liteblog.ROUTE_PERSONAL_PAGE
+import com.example.liteblog.Screen
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Data.Database.FB_Blog
@@ -69,7 +74,8 @@ fun PreviewBlogItem() {
 fun BlogItem(
     blogDefault: Blog,
     modifier: Modifier = Modifier,
-    selectImage: (String) -> Unit
+    selectImage: (String) -> Unit,
+    navController: NavController = rememberNavController()
 ) {
     var blog by remember {
         mutableStateOf(blogDefault)
@@ -127,7 +133,10 @@ fun BlogItem(
                     .align(Alignment.TopStart),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                UserIconDefault(userinfor = userInfor, size = 40, onClick = { /*TODO*/ })
+                UserIconDefault(userinfor = userInfor, size = 40, onClick = {
+                    Log.i("HuyVu", Screen.PersonalPage.withArgs(userInfor.username))
+                    navController.navigate(Screen.PersonalPage.withArgs(userInfor.username))
+                })
                 Column {
                     Text(
                         text = userInfor.username,
