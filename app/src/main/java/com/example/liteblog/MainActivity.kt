@@ -159,12 +159,12 @@ fun MainApp() {
                 username = username?:""
             )
         }
-        composable(ROUTE_PERSONAL_PAGE) {
-            PersonalPageScreen(
-                navController = navController,
-                userInforDefault = UserData.userinfor
-            )
-        }
+//        composable(Screen.PersonalPage.route + "/{username}") {
+//            PersonalPageScreen(
+//                navController = navController,
+//                userInforDefault = UserData.userinfor
+//            )
+//        }
         composable(ROUTE_LAB_GENATATE_BLOG) {
             BlogPostCreaterScreen(
                 navController = navController

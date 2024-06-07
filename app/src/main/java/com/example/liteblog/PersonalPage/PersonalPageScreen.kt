@@ -126,6 +126,7 @@ fun PersonalPageScreen(
     }
 }
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun PersonalPageMainScreen(
     modifier: Modifier = Modifier,
@@ -227,20 +228,46 @@ fun PersonalPageMainScreen(
                     }
                 }
                 else {
-                    Button(
-                        onClick = { /*TODO*/ },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                            containerColor = MaterialTheme.colorScheme.primary
-                        ),
-                        modifier = Modifier.fillMaxWidth(.9f)
-                    ) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = null)
-                        MSpacer(0, 10)
-                        Text(
-                            text = "Theo dõi"
-                        )
+
+                    for(user in UserData.follow.myFollowers) {
+                        if (user.username == userInfor.username) {
+                            viewModel.isFollow = true
+                            break
+                        }
+                    }
+                    if (!viewModel.isFollow) {
+                        Button(
+                            onClick = { viewModel.followUser(userInfor) },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier.fillMaxWidth(.9f)
+                        ) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                            MSpacer(0, 10)
+                            Text(
+                                text = "Theo dõi"
+                            )
+                        }
+                    }
+                    else {
+                        Button(
+                            onClick = { viewModel.unFollowUser(userInfor) },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            ),
+                            modifier = Modifier.fillMaxWidth(.9f)
+                        ) {
+                            Icon(imageVector = Icons.Default.Close, contentDescription = null)
+                            MSpacer(0, 10)
+                            Text(
+                                text = "Hủy Theo dõi"
+                            )
+                        }
                     }
                 }
                 MSpacer(10)

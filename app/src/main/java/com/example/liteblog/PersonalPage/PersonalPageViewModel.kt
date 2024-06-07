@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.utils.Data.Database.Collection
 import com.example.liteblog.utils.Data.Database.FB_Blog
+import com.example.liteblog.utils.Data.Database.FB_Follower
 import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
 import com.example.liteblog.utils.Data.Database.FBupdateAllUserInfor
 import com.example.liteblog.utils.Model.UserInfor
@@ -26,6 +27,7 @@ class PersonalPageViewModel: ViewModel() {
     val state = _state.asStateFlow()
     var selectedImageUri: Uri? by mutableStateOf(null)
     var userInfor: UserInfor? by mutableStateOf(null)
+    var isFollow by mutableStateOf(false)
     fun saveData() {
         viewModelScope.launch {
             _state.update {
@@ -69,7 +71,6 @@ class PersonalPageViewModel: ViewModel() {
             }
         }
     }
-
     fun getBlogs() {
         viewModelScope.launch {
             _state.update {
@@ -83,8 +84,34 @@ class PersonalPageViewModel: ViewModel() {
                 )
             }
             _state.update {
+                it.copy(isLoading = false, isLoadData = false)
+            }
+        }
+    }
+
+    fun followUser(userInfor: UserInfor) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            FB_Follower.followUser(userInfor)
+            isFollow = !isFollow
+            _state.update {
                 it.copy(isLoading = false)
             }
         }
     }
+    fun unFollowUser(userInfor: UserInfor) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            FB_Follower.unFollowUser(userInfor)
+            isFollow = !isFollow
+            _state.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
 }

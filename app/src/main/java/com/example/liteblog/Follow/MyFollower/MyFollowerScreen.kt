@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Follow.components.ItemFriendDefault
 import com.example.liteblog.ROUTE_FIND_USER
+import com.example.liteblog.Screen
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.MyBasicTopBar
 import com.example.liteblog.utils.Component.MyTextField
@@ -60,13 +61,17 @@ fun MyFollowerScreen(
             )
         }
     ) {
-        MainMyFollowerScreen(modifier = Modifier.padding(it))
+        MainMyFollowerScreen(
+            modifier = Modifier.padding(it),
+            navController = navController
+        )
     }
 }
 @Composable
 fun MainMyFollowerScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyFollowerViewModel = viewModel()
+    viewModel: MyFollowerViewModel = viewModel(),
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
     AnimatedVisibility(!state.isLoading) {
@@ -109,7 +114,12 @@ fun MainMyFollowerScreen(
         LazyColumn {
             items(state.follow.myFollowers) { userInfor ->
                 MSpacer(10)
-                ItemFriendDefault(user = userInfor)
+                ItemFriendDefault(
+                    user = userInfor,
+                    onClick = {
+                        navController.navigate(Screen.PersonalPage.withArgs(userInfor.username))
+                    }
+                )
                 MSpacer(10)
                 Divider()
             }

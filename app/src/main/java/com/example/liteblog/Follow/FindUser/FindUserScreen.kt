@@ -27,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Follow.components.ItemFriendFind
+import com.example.liteblog.Screen
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.MyBasicTopBar
 import com.example.liteblog.utils.Component.MyTextField
@@ -50,13 +51,17 @@ fun FindUserScreen(
             )
         }
     ) {
-        FindUserScreen(modifier = Modifier.padding(it))
+        FindUserScreen(
+            modifier = Modifier.padding(it),
+            navController = navController
+        )
     }
 }
 @Composable
 fun FindUserScreen(
     modifier: Modifier = Modifier,
-    viewModel: FindUserViewModel = viewModel()
+    viewModel: FindUserViewModel = viewModel(),
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
     Column(
@@ -91,8 +96,11 @@ fun FindUserScreen(
         if(viewModel.friendFind != null) {
             ItemFriendFind(
                 viewModel.friendFind!!,
-                onClickFollow = {
-                    viewModel.onClickFollow()
+                onClick = {
+//                    viewModel.onClickFollow()
+                    navController.navigate(
+                        Screen.PersonalPage.withArgs(viewModel.friendFind!!.username)
+                    )
                 }
             )
         }

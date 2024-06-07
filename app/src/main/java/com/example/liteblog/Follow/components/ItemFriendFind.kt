@@ -21,7 +21,7 @@ import com.example.liteblog.utils.Model.UserInfor
 @Composable
 fun ItemFriendFind(
     user: UserInfor,
-    onClickFollow: () -> Unit = {}
+    onClick: () -> Unit = {}
 ) {
     Row (modifier = Modifier.fillMaxWidth()){
         UserIconDefault(userinfor = user, size = 80, onClick = { /*TODO*/ })
@@ -38,7 +38,7 @@ fun ItemFriendFind(
             )
             MSpacer(10)
             Button(
-                onClick = { onClickFollow() },
+                onClick = { onClick() },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(5.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -46,7 +46,7 @@ fun ItemFriendFind(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             ) {
-                Text(text = "Theo dõi")
+                Text(text = "Xem trang cá nhân")
             }
         }
     }

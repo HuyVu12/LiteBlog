@@ -1,5 +1,6 @@
 package com.example.liteblog.Follow.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +16,10 @@ import com.example.liteblog.utils.Model.UserInfor
 
 @Composable
 fun ItemFriendDefault(
-    user: UserInfor
+    user: UserInfor,
+    onClick: ()->Unit = {}
 ) {
-    Row (modifier = Modifier.fillMaxWidth()){
+    Row (modifier = Modifier.fillMaxWidth().clickable { onClick() }){
         UserIconDefault(userinfor = user, size = 50, onClick = { /*TODO*/ })
         MSpacer(0, 10)
         Column {

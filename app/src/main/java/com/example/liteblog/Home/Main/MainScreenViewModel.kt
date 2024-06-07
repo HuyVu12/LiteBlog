@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import UserData
+import com.example.liteblog.utils.Data.Database.FBgetFollow
 
 class MainScreenViewModel: ViewModel() {
     private val _state = MutableStateFlow(MainScreenState())
@@ -16,6 +17,7 @@ class MainScreenViewModel: ViewModel() {
     fun checkinLogin() {
         viewModelScope.launch {
             UserData.userinfor = FBgetUserInforByUsername(UserData.username)!!
+            UserData.follow = FBgetFollow(UserData.userinfor)
             _state.update {
                 it.copy(isLogin = true)
             }

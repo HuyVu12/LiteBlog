@@ -1,5 +1,6 @@
 package com.example.liteblog.Setting.MainSetting
 
+import UserData
 import UserStorage
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -49,6 +50,7 @@ import com.example.liteblog.ROUTE_LAB_GENATATE_BLOG
 import com.example.liteblog.ROUTE_LOGIN
 import com.example.liteblog.ROUTE_MY_FOLLOWER
 import com.example.liteblog.ROUTE_PERSONAL_PAGE
+import com.example.liteblog.Screen
 import com.example.liteblog.Setting.MainSetting.component.CardItemFunction
 import com.example.liteblog.utils.Component.MyBasicTopBar
 
@@ -102,7 +104,7 @@ fun MainSettingsScreen(
             item {
                 CardItemFunction(
                     onClick = {
-                        navController.navigate(ROUTE_PERSONAL_PAGE)
+                        navController.navigate(Screen.PersonalPage.withArgs(UserData.username))
                     },
                     textValue = "Trang cá nhân",
                     icon = Icons.Default.AccountCircle
