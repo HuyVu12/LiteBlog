@@ -17,9 +17,12 @@ import kotlinx.coroutines.launch
 class CreateBlogViewModel: ViewModel() {
     private val _state = MutableStateFlow(CreateBlogState())
     val state = _state.asStateFlow()
-
+    var isShowTopicMenu by mutableStateOf(false)
+    var isShowViewModeMenu by mutableStateOf(false)
     var title by mutableStateOf("")
     var description by mutableStateOf("")
+    var topic by mutableStateOf("Chủ đề")
+    var viewMode by mutableStateOf("Công khai")
     var listImages by mutableStateOf(
         mutableListOf<Uri?>()
     )

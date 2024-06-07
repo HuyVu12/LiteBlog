@@ -1,7 +1,5 @@
 package com.example.liteblog.Home.CreateBlog.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,12 +34,9 @@ import UserData
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -55,11 +50,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import coil.compose.AsyncImage
+import com.example.liteblog.Home.CreateBlog.presentation.component.TopicMenu
+import com.example.liteblog.Home.CreateBlog.presentation.component.ViewModeMenu
 import com.example.liteblog.ROUTE_BLOG
-import java.net.URL
 
 @Preview
 @Composable
@@ -110,20 +105,53 @@ fun CreateBlogHead(
     ){
         UserIconDefault(userinfor = userInfor, size = 50, onClick = { /*TODO*/ })
         Column {
-            Text(text = userInfor.username, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = userInfor.username, fontSize = 18.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth())
             Row (horizontalArrangement = Arrangement.spacedBy(10.dp)){
-                FilterChip(
-                    selected = true,
-                    onClick = { /*TODO*/ },
-                    trailingIcon = { Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)},
-                    label = { Text(text = "Chỉ mình tôi")}
-                )
-                FilterChip(
-                    selected = true,
-                    onClick = { /*TODO*/ },
-                    trailingIcon = { Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)},
-                    label = { Text(text = "Album")}
-                )
+                Column {
+                    FilterChip(
+                        selected = true,
+                        onClick = {
+                                  viewModel.isShowViewModeMenu = !viewModel.isShowViewModeMenu
+                        },
+                        trailingIcon = { Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)},
+                        label = { Text(text = viewModel.viewMode)}
+                    )
+                    if(viewModel.isShowViewModeMenu) {
+                        ViewModeMenu (
+                            expanded = viewModel.isShowViewModeMenu,
+                            onDismissRequest = {
+                                viewModel.isShowViewModeMenu = !viewModel.isShowViewModeMenu
+                            },
+                            onSelectItem = {
+                                viewModel.viewMode = it
+                                viewModel.isShowViewModeMenu = !viewModel.isShowViewModeMenu
+                            }
+                        )
+                    }
+                }
+                Column {
+                    FilterChip(
+                        selected = true,
+                        onClick = {
+                            viewModel.isShowTopicMenu = !viewModel.isShowTopicMenu
+                        },
+                        trailingIcon = { Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)},
+                        label = { Text(text = viewModel.topic)},
+                    )
+                    if(viewModel.isShowTopicMenu){
+                        TopicMenu (
+                            expanded = viewModel.isShowTopicMenu,
+                            onDismissRequest = {
+                                viewModel.isShowTopicMenu = !viewModel.isShowTopicMenu
+                            },
+                            onSelectItem = {
+                                viewModel.topic = it
+                                viewModel.isShowTopicMenu = !viewModel.isShowTopicMenu
+                            }
+                        )
+                    }
+
+                }
             }
         }
     }
