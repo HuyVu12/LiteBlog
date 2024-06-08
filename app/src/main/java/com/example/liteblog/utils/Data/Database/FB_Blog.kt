@@ -2,6 +2,7 @@ package com.example.liteblog.utils.Data.Database
 
 import UserData
 import android.util.Log
+import com.example.liteblog.Home.CreateBlog.presentation.component.ViewMode
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.Rating
@@ -102,6 +103,19 @@ class FB_Blog {
                 Rating(upRating = m_upRating, downRating = m_downRating)
             )
         }
+        suspend fun moveToGarbage(blog: Blog) {
+            collection.document(blog.id!!).update(
+                "viewMode", ViewMode.Trash.mode
+            ).await()
+        }
 
+        suspend fun get(idBlog: String): Blog? {
+            val doc = collection.document(idBlog).get().await()
+            if(doc.exists()) {
+                Log.i("HuyVu2", "${doc.toObject<Blog>()}")
+                return doc.toObject<Blog>()
+            }
+            return null
+        }
     }
 }

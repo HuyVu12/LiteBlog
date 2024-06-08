@@ -21,6 +21,7 @@ import com.example.liteblog.Follow.FindUser.FindUserScreen
 import com.example.liteblog.Follow.Follower.FollowerScreen
 import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
 import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogScreen
+import com.example.liteblog.Home.EditBlog.EditBlogScreen
 import com.example.liteblog.Home.Main.CheckScreen
 import com.example.liteblog.Labs.BlogPostCreater.presentation.BlogPostCreaterScreen
 import com.example.liteblog.Labs.VertexApi.presentation.VertexApiScreen
@@ -74,6 +75,7 @@ sealed class Screen(val route: String) {
     object Follower : Screen("follower")
     object PersonalPage : Screen("personal_page")
     object ApiCreateBlog : Screen("Api_create_Blog")
+    object EditBlog: Screen(route = "edit_blog")
 
     fun withArgs(vararg args: String): String {
         return buildString {
@@ -159,12 +161,20 @@ fun MainApp() {
                 username = username?:""
             )
         }
-//        composable(Screen.PersonalPage.route + "/{username}") {
-//            PersonalPageScreen(
-//                navController = navController,
-//                userInforDefault = UserData.userinfor
-//            )
-//        }
+        composable(
+            route = Screen.EditBlog.route + "/{id_Blog}",
+            arguments = listOf(
+                navArgument("id_Blog") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = ""
+                }
+            )
+        ) {
+            val id_Blog = it.arguments?.getString("id_Blog")
+            Log.i("HuyVu", id_Blog?:"no_id")
+            EditBlogScreen(navController = navController, id_Blog = id_Blog?:"")
+        }
         composable(ROUTE_LAB_GENATATE_BLOG) {
             BlogPostCreaterScreen(
                 navController = navController

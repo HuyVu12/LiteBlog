@@ -228,7 +228,6 @@ fun PersonalPageMainScreen(
                     }
                 }
                 else {
-
                     for(user in UserData.follow.myFollowers) {
                         if (user.username == userInfor.username) {
                             viewModel.isFollow = true

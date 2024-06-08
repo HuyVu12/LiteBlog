@@ -40,6 +40,15 @@ var view_mode_data = listOf(
     "Riêng tư",
     "Người theo dõi"
 )
+
+sealed class ViewMode(val mode: String) {
+    object Public: ViewMode("public")
+    object Private: ViewMode("private")
+    object Hide: ViewMode("hide")
+    object Fan: ViewMode("fan")
+    object Trash: ViewMode("trash")
+}
+
 @Composable
 fun ViewModeMenu(
     expanded: Boolean = false,

@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,9 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.Home.Blog.component.MenuSettingBlog
 import com.example.liteblog.Home.Blog.component.MyBodyBlogItem
 import com.example.liteblog.Home.Blog.component.MyRatingButton
 import com.example.liteblog.Home.Comment.ScreenComment
+import com.example.liteblog.Home.CreateBlog.presentation.component.ViewMode
 import com.example.liteblog.ROUTE_PERSONAL_PAGE
 import com.example.liteblog.Screen
 import com.example.liteblog.utils.Component.MSpacer
@@ -49,7 +55,7 @@ import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.launch
 import java.time.Instant
 
-val DEBUG = true
+val DEBUG = false
 
 @Composable
 @Preview(showBackground = true)
@@ -91,7 +97,9 @@ fun BlogItem(
         mutableStateOf(false)
     }
     val coroutineScope = rememberCoroutineScope()
-
+    var isShowMenuSetting by remember {
+        mutableStateOf(false)
+    }
     FB_Blog.fetch(
         blog = blog,
         onUpdate = {
@@ -99,92 +107,123 @@ fun BlogItem(
             liked = it.likes.contains((UserData.userinfor.username))
         }
     )
+    if(
+        (blog.viewMode ?: "") == ViewMode.Trash.mode
+//      ||  ((blog.viewMode ?: "") == ViewMode.Private.mode && blog.userinfor!!.username != UserData.username)
+    )
+    {
 
-    if(isShowComment) {
-        ModalBottomSheet(
-            onDismissRequest = {isShowComment = false},
-            sheetState = rememberModalBottomSheetState(
-                skipPartiallyExpanded = true
-            ),
-            dragHandle = {
-                Column {
-                    MSpacer(10)
-                    Text(text = "Bình luận", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
-                    MSpacer(10)
-                }
-            }
-        ) {
-            ScreenComment(
-                blogData = blog
-            )
-        }
     }
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-    ) {
-//        HEAD
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopStart),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                UserIconDefault(userinfor = userInfor, size = 40, onClick = {
-                    Log.i("HuyVu", Screen.PersonalPage.withArgs(userInfor.username))
-                    navController.navigate(Screen.PersonalPage.withArgs(userInfor.username))
-                })
-                Column {
-                    Text(
-                        text = userInfor.username,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(top = 0.dp)
-                    )
-                    Text(
-                        text = parseTimePastToString(blog.timePost!!) + (if (DEBUG) " - " + blog.id else ""),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 13.sp
-                    )
+    else {
+        if(isShowComment) {
+            ModalBottomSheet(
+                onDismissRequest = {isShowComment = false},
+                sheetState = rememberModalBottomSheetState(
+                    skipPartiallyExpanded = true
+                ),
+                dragHandle = {
+                    Column {
+                        MSpacer(10)
+                        Text(text = "Bình luận", fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
+                        MSpacer(10)
+                    }
                 }
+            ) {
+                ScreenComment(
+                    blogData = blog
+                )
             }
-            MyRatingButton(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                rating = blog.rating,
-                onClickUpRate = {
-                           coroutineScope.launch {
-                               FB_Blog.userRate(blog = blog, isUpRate = true)
-                           }
+        }
+
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+        ) {
+
+//        HEAD
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopStart),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    UserIconDefault(userinfor = userInfor, size = 40, onClick = {
+                        Log.i("HuyVu", Screen.PersonalPage.withArgs(userInfor.username))
+                        navController.navigate(Screen.PersonalPage.withArgs(userInfor.username))
+                    })
+                    Column {
+                        Text(
+                            text = userInfor.username,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(top = 0.dp)
+                        )
+                        Text(
+                            text = parseTimePastToString(blog.timePost!!) + (if (DEBUG) " - " + blog.id else ""),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+                MyRatingButton(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    rating = blog.rating,
+                    onClickUpRate = {
+                        coroutineScope.launch {
+                            FB_Blog.userRate(blog = blog, isUpRate = true)
+                        }
+                    },
+                    onClickDownRate = {
+                        coroutineScope.launch {
+                            FB_Blog.userRate(blog = blog, isUpRate = false)
+                        }
+                    }
+                )
+            }
+            MSpacer(10)
+            MyBodyBlogItem(
+                blog = blog,
+                showAllDescription = showAllDescription,
+                liked = liked,
+                onClickDescription = { showAllDescription = !showAllDescription },
+                onSelectImage = {
+                    selectImage(it)
                 },
-                onClickDownRate = {
+                onShowComment = { isShowComment = !isShowComment },
+                onClickLike = {
                     coroutineScope.launch {
-                        FB_Blog.userRate(blog = blog, isUpRate = false)
+                        FB_Blog.userLike(blog = blog)
                     }
                 }
             )
-        }
-        MSpacer(10)
-        MyBodyBlogItem(
-            blog = blog,
-            showAllDescription = showAllDescription,
-            liked = liked,
-            onClickDescription = { showAllDescription = !showAllDescription },
-            onSelectImage = {
-                selectImage(it)
-            },
-            onShowComment = { isShowComment = !isShowComment },
-            onClickLike = {
-                coroutineScope.launch {
-                    FB_Blog.userLike(blog = blog)
+            if(blog.userinfor!!.username == UserData.username) {
+                Box (modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                    Row {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = null,
+                            modifier = Modifier.clickable {
+                                isShowMenuSetting = !isShowMenuSetting
+                            }
+                        )
+                        MenuSettingBlog(
+                            isShowMenu = isShowMenuSetting,
+                            onDismissRequest = { isShowMenuSetting = !isShowMenuSetting },
+                            blog = blog,
+                            navController = navController
+                        )
+                    }
                 }
             }
-        )
-        MSpacer(10)
+            else {
+                MSpacer(10)
+            }
+        }
     }
+
 }
 
 @Composable
