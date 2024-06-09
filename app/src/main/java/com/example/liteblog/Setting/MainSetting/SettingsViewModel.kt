@@ -3,6 +3,7 @@ package com.example.liteblog.Setting.MainSetting
 import UserStorage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.liteblog.utils.Data.Database.FB_Blog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -25,6 +26,12 @@ class SettingsViewModel: ViewModel() {
                     it.copy(isLoading = false, isExit = true)
                 }
             }
+        }
+    }
+
+    fun Function() {
+        viewModelScope.launch {
+            FB_Blog.reUpdateBlog()
         }
     }
 

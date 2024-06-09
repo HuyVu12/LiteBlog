@@ -1,7 +1,9 @@
 package com.example.liteblog.utils.Data.Database
 
 import UserData
+import android.adservices.topics.Topic
 import android.util.Log
+import com.example.liteblog.Home.CreateBlog.presentation.component.TopicMode
 import com.example.liteblog.Home.CreateBlog.presentation.component.ViewMode
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
@@ -39,12 +41,18 @@ class FB_Blog {
             } catch (e:Exception) {
             }
         }
-        suspend fun get(userInfor: UserInfor? = null) :List<Blog> {
+        suspend fun get(userInfor: UserInfor? = null, topic: String = "Tất cả") :List<Blog> {
             if(userInfor == null) {
-                val docs = collection.orderBy(Field.TimePost.field_name, Query.Direction.DESCENDING).limit(20).get().await()
+                val docs = collection.orderBy(Field.TimePost.field_name, Query.Direction.DESCENDING).get().await()
                 val listsBlog = mutableListOf<Blog>()
 
                 for(doc in docs) {
+                    val blog = doc.toObject<Blog>()
+                    if (blog.viewMode == ViewMode.Trash.mode
+                        || blog.hided
+                        || (blog.userinfor!!.username != UserData.username && blog.viewMode!! == ViewMode.Private.mode)
+                        || (topic != "Tất cả" && blog.topic != topic)
+                        ) continue
                     listsBlog.add(doc.toObject<Blog>())
                 }
                 return listsBlog
@@ -105,10 +113,10 @@ class FB_Blog {
         }
         suspend fun moveToGarbage(blog: Blog) {
             collection.document(blog.id!!).update(
-                "viewMode", ViewMode.Trash.mode
+                "viewMode", ViewMode.Trash.mode,
+                "hided", true
             ).await()
         }
-
         suspend fun get(idBlog: String): Blog? {
             val doc = collection.document(idBlog).get().await()
             if(doc.exists()) {
@@ -116,6 +124,17 @@ class FB_Blog {
                 return doc.toObject<Blog>()
             }
             return null
+        }
+
+        suspend fun reUpdateBlog() {
+            val docs = collection.get().await()
+            for (doc in docs) {
+                var blog = doc.toObject<Blog>()
+                blog.hided = false
+                blog.viewMode = ViewMode.Public.mode
+                blog.topic = TopicMode.Public.mode
+                update(blog)
+            }
         }
     }
 }

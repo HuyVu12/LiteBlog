@@ -3,11 +3,14 @@ package com.example.liteblog.Follow.FindUser
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -92,7 +95,7 @@ fun FindUserScreen(
             ),
             enabled = !state.isLoading
         )
-        MSpacer(30)
+        MSpacer(10)
         if(viewModel.friendFind != null) {
             ItemFriendFind(
                 viewModel.friendFind!!,
@@ -105,22 +108,40 @@ fun FindUserScreen(
             )
         }
         else {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Tìm và theo dõi người dùng",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                MSpacer(10)
-                Text(
-                    text = "Hãy tìm kiếm bạn bè hoặc người quen để kết nối với họ trên Lite Blog",
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center
-                )
+                item {
+                    MSpacer(20)
+                    Text(
+                        text = "Tìm và theo dõi người dùng",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    MSpacer(10)
+                    Text(
+                        text = "Hãy tìm kiếm bạn bè hoặc người quen để kết nối với họ trên Lite Blog",
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    MSpacer(20)
+                }
+                items(viewModel.listUser) {
+                    MSpacer(10)
+                    ItemFriendFind(
+                        user = it,
+                        onClick = {
+//                    viewModel.onClickFollow()
+                            navController.navigate(
+                                Screen.PersonalPage.withArgs(it.username)
+                            )
+                        }
+                    )
+                    MSpacer(10)
+                    Divider()
+                }
             }
         }
     }

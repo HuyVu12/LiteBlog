@@ -1,5 +1,6 @@
 package com.example.liteblog.utils.Data.Database
 
+import UserData
 import UserData.username
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
@@ -94,4 +95,14 @@ suspend fun FBupdateAllUserInfor(userInfor: UserInfor) {
         blog.comments = mu_comments
         Collection.BlogCollection.document(docBlog.id).set(blog).await()
     }
+}
+suspend fun FBgetAllUserInfor(): List<UserInfor> {
+    val docs = Collection.UserInforCollection.get().await()
+    val list = mutableListOf<UserInfor>()
+    for (doc in docs) {
+        val userInfor = doc.toObject<UserInfor>()
+        if(userInfor.username == UserData.username) continue
+        list.add(userInfor)
+    }
+    return list
 }

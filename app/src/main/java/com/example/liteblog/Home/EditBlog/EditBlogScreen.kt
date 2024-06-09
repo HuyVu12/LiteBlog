@@ -43,6 +43,7 @@ import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.liteblog.Home.CreateBlog.presentation.CreateBlogHead
+import com.example.liteblog.Home.EditBlog.comp.EditBlogHead
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.MyBasicTopBar
 import com.example.liteblog.utils.Model.Blog
@@ -53,15 +54,19 @@ fun EditBlogScreen(
     viewModel: EditBlogViewModel = viewModel(),
     id_Blog: String
 ) {
+    val state by viewModel.state.collectAsState()
     Scaffold(
         topBar = {
             MyBasicTopBar(
                 navController = navController,
                 title = {Text(text = "Chỉnh sửa bài viết")},
                 actions = {
-                    Button(onClick = {
-                        viewModel.updateBlog()
-                    }) {
+                    Button(
+                        onClick = {
+                            viewModel.updateBlog()
+                        },
+                        enabled = !state.isLoading
+                    ) {
                         Text(text = "Lưu")
                     }
                 }
@@ -108,7 +113,7 @@ fun MainEditBlogScreen(
                     .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
             ) {
                 item {
-                    CreateBlogHead(viewModel.blog.userinfor!!)
+                    EditBlogHead(viewModel.blog.userinfor!!)
                     OutlinedTextField(
                         value = viewModel.title,
                         onValueChange = {viewModel.title = it},

@@ -58,14 +58,15 @@ fun ListBlogShow(
                 Column {
                     BlogItem(
                         blogDefault = blog,
-                        modifier = Modifier.padding(10.dp),
+                        modifier = Modifier.padding(vertical = 10.dp),
                         selectImage = {selectImage = it},
                         navController = navController
                     )
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(7.dp)
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)))
+//                    Box(modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(7.dp)
+//                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f))
+//                    )
                 }
             }
         }
@@ -76,7 +77,7 @@ fun ListBlogShow(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             somethingTop()
-            MSpacer(20)
+            MSpacer(50)
             Text(
                 text = "Chưa có Blog nào.",
                 fontWeight = FontWeight.SemiBold,

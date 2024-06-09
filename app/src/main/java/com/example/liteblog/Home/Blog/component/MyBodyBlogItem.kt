@@ -49,7 +49,7 @@ fun MyBodyBlogItem(
             fontSize = 16.sp,
             lineHeight = 18.sp,
             color = MaterialTheme.colorScheme.onSurface,
-            maxLines = if(showAllDescription) Int.MAX_VALUE else 4,
+            maxLines = if(showAllDescription) Int.MAX_VALUE else 7,
             modifier = Modifier
                 .clickable {
                     onClickDescription()

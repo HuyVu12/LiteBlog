@@ -55,11 +55,11 @@ fun MenuSettingBlog(
                     navController.navigate(Screen.EditBlog.withArgs(blog.id!!))
                 }
             )
-            MenuSettingBlogItem(
-                text = "Ẩn bài viết",
-                icon = Icons.Default.Person,
-                onClick = {}
-            )
+//            MenuSettingBlogItem(
+//                text = "Ẩn bài viết",
+//                icon = Icons.Default.Person,
+//                onClick = {}
+//            )
             MenuSettingBlogItem(
                 text = "Xoá",
                 icon = Icons.Default.Delete,

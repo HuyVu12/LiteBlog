@@ -16,7 +16,7 @@ data class Blog(
     val rating: Rating = Rating(),
     var topic: String? = null,
     var viewMode: String? = null,
-    val isHided: Boolean = false
+    var hided: Boolean = false
 )
 
 data class Comment(

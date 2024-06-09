@@ -24,7 +24,7 @@ class EditBlogViewModel : ViewModel() {
     var isShowViewModeMenu by mutableStateOf(false)
     var title by mutableStateOf("")
     var description by mutableStateOf("")
-    var topic by mutableStateOf("Chủ đề")
+    var topic by mutableStateOf("Tự do")
     var viewMode by mutableStateOf("Công khai")
     var listImages by mutableStateOf(
         mutableListOf<Uri?>()
@@ -60,7 +60,9 @@ class EditBlogViewModel : ViewModel() {
     }
     fun updateBlog() {
         viewModelScope.launch {
-//
+            _state.update {
+                it.copy(isLoading = true)
+            }
             blog.title = title
             blog.description = description
             blog.topic = topic
@@ -71,6 +73,10 @@ class EditBlogViewModel : ViewModel() {
 //            }
 //            blog.imageList = imageList
             FB_Blog.update(blog = blog)
+
+            _state.update {
+                it.copy(isLoading = false)
+            }
         }
     }
 }

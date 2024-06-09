@@ -9,18 +9,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 var topics_data = listOf(
-    "Chung",
-    "Đời sống",
-    "Kiến thức",
-    "Làm đẹp",
-    "Sức khỏe",
-    "Thời trang",
-    "Nội thất",
-    "Du lịch",
-    "Sách",
-    "Thể thao",
-    "Review",
-    "Tin khuyến mãi",
+    TopicMode.Public.mode,
+    TopicMode.Live.mode,
+    TopicMode.Knowledge.mode,
+    TopicMode.Act.mode,
+    TopicMode.Literature.mode,
+    TopicMode.Beauty.mode,
+    TopicMode.Fashion.mode,
+    TopicMode.Interior.mode,
+    TopicMode.Tourism.mode,
+    TopicMode.Book.mode,
+    TopicMode.Sport.mode,
+    TopicMode.Review.mode,
+    TopicMode.Seld.mode,
 )
 @Composable
 fun TopicMenu(
@@ -36,17 +37,35 @@ fun TopicMenu(
 }
 
 var view_mode_data = listOf(
-    "Công khai",
-    "Riêng tư",
-    "Người theo dõi"
+    ViewMode.Public.mode,
+    ViewMode.Private.mode,
+//    ViewMode.Fan.mode,
+//    ViewMode.Trash.mode,
+//    ViewMode.Hide.mode
 )
 
 sealed class ViewMode(val mode: String) {
-    object Public: ViewMode("public")
-    object Private: ViewMode("private")
-    object Hide: ViewMode("hide")
-    object Fan: ViewMode("fan")
+    object Public: ViewMode("Công khai")
+    object Private: ViewMode("Riêng tư")
+    object Hide: ViewMode("Ẩn")
+    object Fan: ViewMode("Người theo dõi")
     object Trash: ViewMode("trash")
+}
+
+sealed class TopicMode(val mode: String) {
+    object Public: ViewMode("Tự do")
+    object Live: ViewMode("Đời sống")
+    object Act: ViewMode("Nghệ thuật")
+    object Literature: ViewMode("Văn học")
+    object Knowledge: ViewMode("Kiến thức")
+    object Beauty: ViewMode("Làm đẹp")
+    object Fashion: ViewMode("Thời trang")
+    object Interior: ViewMode("Nội thất")
+    object Tourism: ViewMode("Du lịch")
+    object Book: ViewMode("Sách")
+    object Sport: ViewMode("Thể thao")
+    object Review: ViewMode("Review")
+    object Seld: ViewMode("Tin khuyến mãi")
 }
 
 @Composable

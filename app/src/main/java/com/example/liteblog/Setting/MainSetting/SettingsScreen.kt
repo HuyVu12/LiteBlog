@@ -155,6 +155,15 @@ fun MainSettingsScreen(
                     icon = Icons.Default.Build
                 )
             }
+//            item {
+//                CardItemFunction(
+//                    onClick = {
+//                        viewModel.Function()
+//                    },
+//                    textValue = "Re Update",
+//                    icon = Icons.Default.Build
+//                )
+//            }
         }
         Divider()
         TextButton(

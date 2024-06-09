@@ -21,7 +21,7 @@ class CreateBlogViewModel: ViewModel() {
     var isShowViewModeMenu by mutableStateOf(false)
     var title by mutableStateOf("")
     var description by mutableStateOf("")
-    var topic by mutableStateOf("Chủ đề")
+    var topic by mutableStateOf("Tự do")
     var viewMode by mutableStateOf("Công khai")
     var listImages by mutableStateOf(
         mutableListOf<Uri?>()
@@ -43,7 +43,10 @@ class CreateBlogViewModel: ViewModel() {
                 Blog(
                     title = title,
                     description = description,
-                    imageList = imageList
+                    imageList = imageList,
+                    hided = false,
+                    topic = topic,
+                    viewMode = viewMode
                 )
             )
             _state.update {

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
 import com.example.liteblog.utils.Data.Database.FBfollowUser
+import com.example.liteblog.utils.Data.Database.FBgetAllUserInfor
 import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,20 @@ class FindUserViewModel: ViewModel() {
 
     var friendInput by mutableStateOf("")
     var friendFind:UserInfor? by mutableStateOf(null)
-
+    var listUser: List<UserInfor> by mutableStateOf(
+        mutableListOf()
+    )
+    init {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(isLoading = true)
+            }
+            listUser = FBgetAllUserInfor()
+            _state.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
     fun onFindUser() {
         if(friendInput.isNotEmpty()) {
             viewModelScope.launch {

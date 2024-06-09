@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -138,6 +141,7 @@ fun BlogItem(
         Column(
             modifier = modifier
                 .fillMaxWidth()
+                .padding(horizontal = 10.dp)
                 .background(MaterialTheme.colorScheme.surface)
         ) {
 
@@ -183,7 +187,17 @@ fun BlogItem(
                     }
                 )
             }
-            MSpacer(10)
+            Row {
+                AssistChip(onClick = { /*TODO*/ }, label = {
+                    Text(text = blog.viewMode!!)
+                })
+                MSpacer(0, 10)
+                AssistChip(onClick = { /*TODO*/ }, label = {
+                    Text(text = blog.topic!!)
+                })
+            }
+            Divider()
+            MSpacer(5)
             MyBodyBlogItem(
                 blog = blog,
                 showAllDescription = showAllDescription,
@@ -222,6 +236,12 @@ fun BlogItem(
                 MSpacer(10)
             }
         }
+
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(7.dp)
+            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f))
+        )
     }
 
 }
