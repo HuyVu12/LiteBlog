@@ -73,14 +73,16 @@ dependencies {
 //    Font
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.7")
 //    ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
 //    Navcontroller
     implementation("androidx.navigation:navigation-compose:2.7.7")
 //    Storage
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 //    Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
-    // add the dependency for the Google AI client SDK for Android
-    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
+//    add the dependency for the Google AI client SDK for Android
+    implementation("com.google.ai.client.generativeai:generativeai:0.8.0")
+//    Icon
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
 }

@@ -73,13 +73,13 @@ fun LSInputComp(
             },
             label = { Text(text = "Mật khẩu") },
             placeholder = { Text(text = "Mật khẩu") },
-            visualTransformation = if(isShowPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            visualTransformation = if(!isShowPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Go
             ),
             trailingIcon = {
                 IconButton(onClick = {onClickIconPassInput() }) {
-                    if(isShowPassword)
+                    if(!isShowPassword)
                         Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
                     else
                         Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = null)

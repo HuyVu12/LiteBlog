@@ -3,6 +3,7 @@ package com.example.liteblog.Home.Comment
 import UserData
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -23,6 +25,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liteblog.Home.Blog.Sample_Blogs
+import com.example.liteblog.Home.Comment.component.MenuCommentSelect
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Component.UserIconDefault
 import com.example.liteblog.utils.Data.Database.FB_Blog
@@ -41,7 +45,7 @@ import com.example.liteblog.utils.Model.Blog
 import com.example.liteblog.utils.Model.Comment
 import com.example.liteblog.utils.Model.UserInfor
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun PreviewCommentItem(
     comment: Comment = Comment(
@@ -55,50 +59,83 @@ fun PreviewCommentItem(
         reports = emptyList()
     )
 ) {
-    CommentItem(comment = comment)
+    CommentItem(comment = comment, blog = Blog())
 }
 @Composable
 fun CommentItem(
     comment: Comment,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    blog: Blog
 ) {
-    Row (
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ){
-        UserIconDefault(
-            userinfor = comment.userinfor!!,
-            size = 40,
-            onClick = { /*TODO*/ }
-        )
-        Column {
-            Column(
-                modifier = Modifier
-//                .weight(1f)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .padding(10.dp)
-            ) {
-                Text(
-                    text = comment.userinfor!!.username,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-                MSpacer(5)
-                Text(
-                    text = "${comment.description}",
-                    fontSize = 15.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-            Text(
-                text = MyFunction.parseTimePastToString(timePost = comment.timePost!!),
-                modifier = Modifier.padding(start = 10.dp, top = 5.dp),
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+    if(comment.visible == true) {
+
+        var showMenuSetting by remember {
+            mutableStateOf(false)
+        }
+        Row (
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ){
+            UserIconDefault(
+                userinfor = comment.userinfor!!,
+                size = 40,
+                onClick = { /*TODO*/ }
             )
+            Column {
+                Column(
+                    modifier = Modifier
+//                .weight(1f)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(10.dp)
+                ) {
+                    Text(
+                        text = comment.userinfor!!.username,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    MSpacer(5)
+                    Text(
+                        text = "${comment.description}",
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ){
+                    Text(
+                        text = MyFunction.parseTimePastToString(timePost = comment.timePost!!),
+                        modifier = Modifier.padding(start = 10.dp, top = 5.dp),
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    if (
+                        comment.userinfor!!.username == UserData.username ||
+                        blog.userinfor!!.username == UserData.username ||
+                        UserData.userinfor.admin == true
+                    ) {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.MoreHoriz,
+                                contentDescription = null,
+                                modifier = Modifier.clickable {
+                                    showMenuSetting = true
+                                }
+                            )
+                            MenuCommentSelect(
+                                isVisible = showMenuSetting,
+                                onDissmiss = { showMenuSetting = false },
+                                comment = comment,
+                                blog = blog
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -147,7 +184,8 @@ fun ScreenComment(
             items(blogData.comments) { comment ->
                 CommentItem(
                     comment = comment,
-                    modifier = Modifier.padding(vertical = 5.dp)
+                    modifier = Modifier.padding(vertical = 5.dp),
+                    blog = blogData
                 )
             }
         }

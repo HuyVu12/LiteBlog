@@ -13,6 +13,7 @@ import com.example.liteblog.Home.CreateBlog.presentation.component.view_mode_dat
 
 var topics_data_select = listOf(
     "Tất cả",
+    "Yêu thích",
     TopicMode.Public.mode,
     TopicMode.Live.mode,
     TopicMode.Knowledge.mode,

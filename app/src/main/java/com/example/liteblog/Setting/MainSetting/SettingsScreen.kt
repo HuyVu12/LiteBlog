@@ -16,8 +16,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.BubbleChart
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Star
@@ -43,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.liteblog.Home.Blog.DEBUG
 import com.example.liteblog.ROUTE_FIND_USER
 import com.example.liteblog.ROUTE_FOLLOWER
 import com.example.liteblog.ROUTE_LAB_AI
@@ -140,10 +145,19 @@ fun MainSettingsScreen(
             item {
                 CardItemFunction(
                     onClick = {
+                        navController.navigate(Screen.Chat.route)
+                    },
+                    textValue = "Nhắn tin",
+                    icon = Icons.Default.Chat
+                )
+            }
+            item {
+                CardItemFunction(
+                    onClick = {
                         navController.navigate(ROUTE_LAB_AI)
                     },
                     textValue = "Chat AI",
-                    icon = Icons.Default.Build
+                    icon = Icons.Default.BubbleChart
                 )
             }
             item {
@@ -152,18 +166,20 @@ fun MainSettingsScreen(
                         navController.navigate(ROUTE_LAB_GENATATE_BLOG)
                     },
                     textValue = "Gợi ý AI",
-                    icon = Icons.Default.Build
+                    icon = Icons.Default.Help
                 )
             }
-//            item {
-//                CardItemFunction(
-//                    onClick = {
-//                        viewModel.Function()
-//                    },
-//                    textValue = "Re Update",
-//                    icon = Icons.Default.Build
-//                )
-//            }
+            if(UserData.userinfor.admin == true) {
+                item {
+                    CardItemFunction(
+                        onClick = {
+                            viewModel.Function()
+                        },
+                        textValue = "Re Update",
+                        icon = Icons.Default.Update
+                    )
+                }
+            }
         }
         Divider()
         TextButton(

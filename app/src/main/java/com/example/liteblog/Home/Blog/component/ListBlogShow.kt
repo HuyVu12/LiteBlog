@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,6 +32,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.liteblog.Home.Blog.BlogItem
 import com.example.liteblog.utils.Component.MSpacer
 import com.example.liteblog.utils.Model.Blog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 
 @Composable
 fun ListBlogShow(
@@ -38,6 +43,11 @@ fun ListBlogShow(
     listBlogs: List<Blog>,
     navController: NavController = rememberNavController()
 ) {
+    val state_lazy = rememberLazyGridState()
+    LaunchedEffect(key1 = listBlogs) {
+        state_lazy.scrollToItem(listBlogs.size)
+        state_lazy.scrollToItem(0)
+    }
     if(listBlogs.size > 0) {
         var selectImage:String? by rememberSaveable {
             mutableStateOf(null)
@@ -51,7 +61,8 @@ fun ListBlogShow(
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(1),
-            modifier = modifier.zIndex(1f)
+            modifier = modifier.zIndex(1f),
+            state = state_lazy
         ) {
             item { somethingTop() }
             items(listBlogs) {blog ->

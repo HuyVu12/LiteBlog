@@ -10,7 +10,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -39,6 +42,9 @@ fun MyBasicTopBar(
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
         },
-        actions = actions
+        actions = actions,
+        modifier = Modifier.shadow(
+            elevation = 5.dp
+        )
     )
 }

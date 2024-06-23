@@ -106,3 +106,10 @@ suspend fun FBgetAllUserInfor(): List<UserInfor> {
     }
     return list
 }
+fun BannedUser(userInfor: UserInfor) {
+    var isBanned: Boolean? = userInfor.banned
+    if(isBanned == null)isBanned = false
+    else isBanned = true
+    isBanned = !isBanned
+    val doc = Collection.UserInforCollection.document(userInfor.username).update("banned", isBanned)
+}

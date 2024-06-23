@@ -17,6 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.liteblog.Chat.presentation.ChatScreen.ChatScreen
+import com.example.liteblog.Chat.presentation.ChatStorage.ChatStorageScreen
 import com.example.liteblog.Follow.FindUser.FindUserScreen
 import com.example.liteblog.Follow.Follower.FollowerScreen
 import com.example.liteblog.Follow.MyFollower.MyFollowerScreen
@@ -76,7 +78,9 @@ sealed class Screen(val route: String) {
     object PersonalPage : Screen("personal_page")
     object ApiCreateBlog : Screen("Api_create_Blog")
     object EditBlog: Screen(route = "edit_blog")
+    object ChatScreen: Screen(route = "chatScreen")
 
+    object Chat: Screen(route = "chat")
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)
@@ -175,8 +179,27 @@ fun MainApp() {
             Log.i("HuyVu", id_Blog?:"no_id")
             EditBlogScreen(navController = navController, id_Blog = id_Blog?:"")
         }
+        composable(
+            route = Screen.ChatScreen.route + "/{id_Chat}",
+            arguments = listOf(
+                navArgument("id_Chat") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = ""
+                }
+            )
+        ) {
+            val id_Chat = it.arguments?.getString("id_Chat")
+            Log.i("HuyVu5", "${id_Chat}")
+            ChatScreen(navController = navController, chat_id = id_Chat?:"")
+        }
         composable(ROUTE_LAB_GENATATE_BLOG) {
             BlogPostCreaterScreen(
+                navController = navController
+            )
+        }
+        composable(Screen.Chat.route) {
+            ChatStorageScreen(
                 navController = navController
             )
         }

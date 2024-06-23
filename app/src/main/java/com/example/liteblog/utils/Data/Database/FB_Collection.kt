@@ -18,4 +18,10 @@ object Collection {
     val FollowCollection by lazy {
         db.collection("follows")
     }
+    val ChatStorageCollection by lazy {
+        db.collection("chat_storages")
+    }
+    val ChatCollection by lazy {
+        db.collection("chat")
+    }
 }

@@ -9,11 +9,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.liteblog.Chat.data.FB_Chat
 import com.example.liteblog.utils.Data.Database.Collection
 import com.example.liteblog.utils.Data.Database.FB_Blog
 import com.example.liteblog.utils.Data.Database.FB_Follower
 import com.example.liteblog.utils.Data.Database.FBgetUserInforByUsername
 import com.example.liteblog.utils.Data.Database.FBupdateAllUserInfor
+import com.example.liteblog.utils.Model.User
 import com.example.liteblog.utils.Model.UserInfor
 import com.example.liteblog.utils.Storage.FireStorage
 import com.example.liteblog.utils.Storage.FireStorage.Companion.uploadImage
@@ -111,6 +113,11 @@ class PersonalPageViewModel: ViewModel() {
             _state.update {
                 it.copy(isLoading = false)
             }
+        }
+    }
+    fun chatUser(userInfor: UserInfor) {
+        viewModelScope.launch {
+            FB_Chat.create(user1 = userInfor, user2 = UserData.userinfor)
         }
     }
 

@@ -58,7 +58,7 @@ import com.example.liteblog.utils.Model.UserInfor
 import kotlinx.coroutines.launch
 import java.time.Instant
 
-val DEBUG = false
+val DEBUG = true
 
 @Composable
 @Preview(showBackground = true)
@@ -166,7 +166,7 @@ fun BlogItem(
                             modifier = Modifier.padding(top = 0.dp)
                         )
                         Text(
-                            text = parseTimePastToString(blog.timePost!!) + (if (DEBUG) " - " + blog.id else ""),
+                            text = parseTimePastToString(blog.timePost!!) + (if (userInfor.admin == true) " - " + blog.id else ""),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 13.sp
                         )
@@ -213,7 +213,8 @@ fun BlogItem(
                     }
                 }
             )
-            if(blog.userinfor!!.username == UserData.username) {
+            Log.i("HuyVu4", "${UserData.userinfor.admin}")
+            if(blog.userinfor!!.username == UserData.username || UserData.userinfor.admin == true) {
                 Box (modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
                     Row {
                         Icon(

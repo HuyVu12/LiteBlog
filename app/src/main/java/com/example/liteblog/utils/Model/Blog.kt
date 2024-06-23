@@ -16,7 +16,8 @@ data class Blog(
     val rating: Rating = Rating(),
     var topic: String? = null,
     var viewMode: String? = null,
-    var hided: Boolean = false
+    var hided: Boolean = false,
+    var blockUser: List<String>? = emptyList()
 )
 
 data class Comment(
@@ -25,6 +26,7 @@ data class Comment(
     var timePost: Long ?= null,
     val likes: List<UserInfor> = emptyList(),
     val reports: List<UserInfor> = emptyList(),
+    var visible: Boolean = true
 )
 
 data class Rating(

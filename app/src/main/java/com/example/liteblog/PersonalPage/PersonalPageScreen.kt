@@ -19,9 +19,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -55,6 +57,8 @@ import com.example.liteblog.utils.Model.UserInfor
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.liteblog.Home.Blog.component.ListBlogShow
 import com.example.liteblog.ROUTE_CREATE_BLOG
+import com.example.liteblog.Screen
+import com.example.liteblog.utils.Data.Database.BannedUser
 
 @Preview
 @Composable
@@ -265,6 +269,47 @@ fun PersonalPageMainScreen(
                             MSpacer(0, 10)
                             Text(
                                 text = "Hủy Theo dõi"
+                            )
+                        }
+                    }
+                    MSpacer(5)
+                    Button(
+                        onClick = {
+                            viewModel.chatUser(userInfor)
+                            navController.navigate(Screen.Chat.route)
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = MaterialTheme.colorScheme.primary,
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        ),
+                        modifier = Modifier.fillMaxWidth(.9f)
+                    ) {
+                        Icon(imageVector = Icons.Default.Chat, contentDescription = null)
+                        MSpacer(0, 10)
+                        Text(
+                            text = "Nhắn tin"
+                        )
+                    }
+                    if(UserData.userinfor.admin == true) {
+                        MSpacer(5)
+                        Button(
+                            onClick = {
+                                BannedUser(userInfor)
+                                navController.navigate(Screen.PersonalPage.withArgs(userInfor.username))
+                            },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                contentColor = MaterialTheme.colorScheme.errorContainer,
+                                containerColor = MaterialTheme.colorScheme.error
+                            ),
+                            modifier = Modifier.fillMaxWidth(.9f)
+                        ) {
+                            Icon(imageVector = Icons.Default.Warning, contentDescription = null)
+                            MSpacer(0, 10)
+                            Text(
+                                text = if(userInfor.banned == true) "Gỡ vô hiệu hóa tài khoản"
+                                    else "Vô hiệu tài khoản"
                             )
                         }
                     }

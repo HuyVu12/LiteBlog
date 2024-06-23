@@ -7,6 +7,7 @@ import com.example.liteblog.Home.CreateBlog.presentation.component.TopicMode
 import com.example.liteblog.Home.CreateBlog.presentation.component.ViewMode
 import com.example.liteblog.utils.Functions.MyFunction
 import com.example.liteblog.utils.Model.Blog
+import com.example.liteblog.utils.Model.Comment
 import com.example.liteblog.utils.Model.Rating
 import com.example.liteblog.utils.Model.UserInfor
 import com.google.firebase.firestore.Query
@@ -45,21 +46,33 @@ class FB_Blog {
             if(userInfor == null) {
                 val docs = collection.orderBy(Field.TimePost.field_name, Query.Direction.DESCENDING).get().await()
                 val listsBlog = mutableListOf<Blog>()
-
                 for(doc in docs) {
                     val blog = doc.toObject<Blog>()
                     if (blog.viewMode == ViewMode.Trash.mode
                         || blog.hided
                         || (blog.userinfor!!.username != UserData.username && blog.viewMode!! == ViewMode.Private.mode)
-                        || (topic != "Tất cả" && blog.topic != topic)
+                        || ((topic != "Tất cả" && topic != "Yêu thích") && blog.topic != topic)
+                        || ((topic == "Yêu thích") && !blog.likes.contains(UserData.username))
+                        || (blog.blockUser?.contains(UserData.username) == true)
                         ) continue
                     listsBlog.add(doc.toObject<Blog>())
                 }
                 return listsBlog
             }
             else {
-                val doc = collection.whereEqualTo(Field.UserInfor.field_name, userInfor).get().await()
-                return doc.toObjects()
+                val docs = collection.get().await()
+                val listsBlog = mutableListOf<Blog>()
+                for (doc in docs) {
+                    val blog = doc.toObject<Blog>()
+                    if (blog.viewMode == ViewMode.Trash.mode
+                        || blog.hided
+                        || (blog.userinfor!!.username != UserData.username && blog.viewMode!! == ViewMode.Private.mode)
+                        || (blog.blockUser?.contains(UserData.username) == true)
+                        || userInfor.username != blog.userinfor!!.username
+                    ) continue
+                    listsBlog.add(doc.toObject<Blog>())
+                }
+                return listsBlog
             }
 
         }
@@ -125,16 +138,53 @@ class FB_Blog {
             }
             return null
         }
-
         suspend fun reUpdateBlog() {
-            val docs = collection.get().await()
+            var docs = collection.get().await()
             for (doc in docs) {
                 var blog = doc.toObject<Blog>()
                 blog.hided = false
-                blog.viewMode = ViewMode.Public.mode
-                blog.topic = TopicMode.Public.mode
+//                blog.viewMode = ViewMode.Public.mode
+//                blog.topic = TopicMode.Public.mode
+                blog.blockUser = emptyList()
                 update(blog)
             }
+            docs = Collection.UserInforCollection.get().await()
+            for (doc in docs) {
+                var user = doc.toObject<UserInfor>()
+                user.banned = false
+                Collection.UserInforCollection.document(user.username).set(user)
+            }
+        }
+        fun removeComment(
+            blog: Blog,
+            comment: Comment
+        ) {
+            val mComments = blog.comments.toMutableList()
+            for (i in 0..<mComments.size) {
+                if(mComments[i] == comment) {
+                    mComments.removeAt(i)
+                    break
+                }
+            }
+            collection.document(blog.id!!).update("comments", mComments)
+        }
+        fun blockUser(
+            blog: Blog,
+            comment: Comment
+        ) {
+            val data = comment
+            val mComments = mutableListOf<Comment>()
+            var mBlockUser = blog.blockUser?.toMutableList()
+            if(mBlockUser == null) mBlockUser = mutableListOf()
+                for (com in blog.comments) {
+                    if(com.userinfor!!.username != data.userinfor!!.username) {
+                        mComments.add(com)
+                    }
+                }
+            if(!mBlockUser.contains(data.userinfor!!.username)) {
+                mBlockUser.add(data.userinfor!!.username)
+            }
+            collection.document(blog.id!!).update("comments", mComments, "blockUser", mBlockUser)
         }
     }
 }
